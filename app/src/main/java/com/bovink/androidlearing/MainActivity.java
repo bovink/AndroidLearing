@@ -1,5 +1,6 @@
 package com.bovink.androidlearing;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadFile("img001.jpg");
+                downloadFile("video.mp4");
             }
         });
     }
@@ -48,15 +49,16 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
 
-//                    new AsyncTask<Void, Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground(Void... params) {
-//
-//                            return null;
-//                        }
-//                    }.execute();
-                    boolean writeToDisk = writeResponseBodyToDisk(response.body());
-                    Log.d(TAG, "file download was a success?" + writeToDisk);
+                    System.out.println("MainActivity.onResponse");
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... params) {
+
+                            boolean writeToDisk = writeResponseBodyToDisk(response.body());
+                            Log.d(TAG, "file download was a success?" + writeToDisk);
+                            return null;
+                        }
+                    }.execute();
                 } else {
                     Log.d(TAG, "server contact fail");
                 }
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
             // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "Future Studio Icon.png");
+            File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "video.mp4");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
