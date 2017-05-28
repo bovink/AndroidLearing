@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,11 +26,16 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_download)
     Button btn_download;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this); //这个最好放在基类里
+
+        progressBar.setMax(100);
 
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                     fileSizeDownloaded += read;
 
                     Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    int percent = (int) ((fileSizeDownloaded * 100) / fileSize);
+                    progressBar.setProgress(percent);
+
                 }
 
                 outputStream.flush();
