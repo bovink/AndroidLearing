@@ -1,12 +1,12 @@
 package com.bovink.androidlearing;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.bovink.androidlearing.download.ProgressListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,10 +16,11 @@ import java.io.OutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static String TAG = MainActivity.class.getName();
@@ -29,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    CompositeDisposable disposable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this); //这个最好放在基类里
+
+        disposable = new CompositeDisposable();
 
         progressBar.setMax(100);
 
@@ -46,41 +51,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadFile(String img) {
-        ImageApi api = ApiUtils.getImageApi();
-
-        Call<ResponseBody> call = api.downloadFile(img);
-
-        call.enqueue(new Callback<ResponseBody>() {
+        ImageApi api = ApiUtils.getImageApi(new ProgressListener() {
             @Override
-            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-
-                    System.out.println("MainActivity.onResponse");
-                    new AsyncTask<Void, Void, Void>() {
-                        @Override
-                        protected Void doInBackground(Void... params) {
-
-                            boolean writeToDisk = writeResponseBodyToDisk(response.body());
-                            Log.d(TAG, "file download was a success?" + writeToDisk);
-                            return null;
-                        }
-                    }.execute();
-                } else {
-                    Log.d(TAG, "server contact fail");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "fail");
-
+            public void update(long bytesRead, long contentLength, boolean done) {
+                int percent = (int) ((bytesRead * 100) / contentLength);
+                System.out.println("percent = " + percent);
+                progressBar.setProgress(percent);
             }
         });
 
 
+        DisposableObserver<ResponseBody> observer = new DisposableObserver<ResponseBody>() {
+            @Override
+            public void onNext(@NonNull ResponseBody body) {
+
+                writeResponseBodyToDisk(body);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        disposable.add(api.downloadFile(img)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(observer));
+
+
+
     }
 
-    private boolean writeResponseBodyToDisk(ResponseBody body) {
+    private void writeResponseBodyToDisk(ResponseBody body) {
         try {
             // todo change the file location/name according to your needs
             File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "video.mp4");
@@ -90,9 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
 
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
@@ -105,20 +110,12 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     outputStream.write(fileReader, 0, read);
-
-                    fileSizeDownloaded += read;
-
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
-                    int percent = (int) ((fileSizeDownloaded * 100) / fileSize);
-                    progressBar.setProgress(percent);
-
                 }
 
                 outputStream.flush();
 
-                return true;
             } catch (IOException e) {
-                return false;
+
             } finally {
                 if (inputStream != null) {
                     inputStream.close();
@@ -129,8 +126,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } catch (IOException e) {
-            return false;
+
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
+    }
 }

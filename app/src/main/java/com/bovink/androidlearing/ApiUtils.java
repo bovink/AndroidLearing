@@ -1,5 +1,7 @@
 package com.bovink.androidlearing;
 
+import com.bovink.androidlearing.download.ProgressListener;
+
 /**
  * com.bovink.androidlearing
  *
@@ -11,9 +13,9 @@ public class ApiUtils {
 
     private static ImageApi imageApi;
 
-    public static ImageApi getImageApi() {
+    public static ImageApi getImageApi(ProgressListener listener) {
         if (imageApi == null) {
-            imageApi = RetrofitUtils.retrofit()
+            imageApi = RetrofitUtils.retrofit(listener)
                     .create(ImageApi.class);
         }
 
