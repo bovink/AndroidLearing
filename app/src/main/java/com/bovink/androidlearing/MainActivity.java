@@ -2,6 +2,8 @@ package com.bovink.androidlearing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.listview)
     ListView listView;
 
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
         strings3.add("seven");
         lists.add(strings3);
 
-        ListViewAdapter<String> adapter = new ListViewAdapter<>(lists, this);
+//        ListViewAdapter<String> adapter = new ListViewAdapter<>(lists, this);
+//
+//
+//        listView.setAdapter(adapter);
 
-
-        listView.setAdapter(adapter);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(strings2, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
     }
 }
