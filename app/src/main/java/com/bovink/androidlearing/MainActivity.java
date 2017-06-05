@@ -2,7 +2,6 @@ package com.bovink.androidlearing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
@@ -26,32 +25,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        ArrayList<List<String>> lists = new ArrayList<>();
-        ArrayList<String> strings1 = new ArrayList<>();
-        ArrayList<String> strings2 = new ArrayList<>();
-        ArrayList<String> strings3 = new ArrayList<>();
+        ArrayList<String> item1 = new ArrayList<>();
+        ArrayList<String> item2 = new ArrayList<>();
+        ArrayList<String> item3 = new ArrayList<>();
 
-        strings1.add("one");
-        strings1.add("two");
-        lists.add(strings1);
+        item1.add("apple");
+        item1.add("tomato");
+        item1.add("apple");
 
-        strings2.add("three");
-        strings2.add("four");
-        strings2.add("five");
-        lists.add(strings2);
+        item2.add("java");
+        item2.add("c++");
+        item2.add("javascript");
+        item2.add("python");
 
-        strings3.add("six");
-        strings3.add("seven");
-        lists.add(strings3);
+        item3.add("China");
+        item3.add("USA");
+        item3.add("Russia");
 
-//        ListViewAdapter<String> adapter = new ListViewAdapter<>(lists, this);
-//
-//
-//        listView.setAdapter(adapter);
+        ArrayList<List<String>> itemList = new ArrayList<>();
+        itemList.add(item1);
+        itemList.add(item2);
+        itemList.add(item3);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(strings2, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+
+        ArrayList<String> titleList = new ArrayList<>();
+        titleList.add("fruit");
+        titleList.add("language");
+        titleList.add("country");
+
+//        RecyclerViewNewAdapter<String, String> adapter = new RecyclerViewNewAdapter<>(itemList, titleList, this);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(adapter);
 
     }
 }
