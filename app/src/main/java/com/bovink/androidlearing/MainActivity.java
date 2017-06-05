@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         titleList.add("language");
         titleList.add("country");
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, itemList, titleList);
+        Adapter adapter = new Adapter(this, itemList, titleList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 

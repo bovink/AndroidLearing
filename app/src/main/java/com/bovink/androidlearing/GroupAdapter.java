@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2017/6/4
  */
 
-public abstract class RecyclerViewGroupAdapter<I, T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class GroupAdapter<I, T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /**
      * 内容表
      */
@@ -43,7 +43,7 @@ public abstract class RecyclerViewGroupAdapter<I, T> extends RecyclerView.Adapte
      */
     private int curIndex = 0;
 
-//    public RecyclerViewGroupAdapter(List<List<I>> itemList, List<T> titleList, Context context) {
+//    public GroupAdapter(List<List<I>> itemList, List<T> titleList, Context context) {
 //        this.itemList = itemList;
 //        this.titleList = titleList;
 //        this.context = context;

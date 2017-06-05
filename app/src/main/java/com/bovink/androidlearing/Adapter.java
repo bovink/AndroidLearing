@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2017/6/4
  */
 
-public class RecyclerViewAdapter extends RecyclerViewGroupAdapter<String, String> {
+public class Adapter extends GroupAdapter<String, String> {
     private Context mContext;
     /**
      * 内容表
@@ -31,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerViewGroupAdapter<String, String
      */
     private List<String> mTitleList;
 
-    public RecyclerViewAdapter(Context context, List<List<String>> itemList, List<String> titleList) {
+    public Adapter(Context context, List<List<String>> itemList, List<String> titleList) {
         setItemList(itemList);
         setTitleList(titleList);
         mContext = context;
