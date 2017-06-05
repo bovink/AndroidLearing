@@ -2,6 +2,7 @@ package com.bovink.androidlearing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
@@ -53,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         titleList.add("language");
         titleList.add("country");
 
-//        RecyclerViewNewAdapter<String, String> adapter = new RecyclerViewNewAdapter<>(itemList, titleList, this);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(adapter);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, itemList, titleList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
     }
 }
