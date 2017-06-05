@@ -18,49 +18,36 @@ import java.util.List;
 
 public class Adapter extends GroupAdapter<String, String> {
     private Context mContext;
-    /**
-     * 内容表
-     */
-    private List<List<String>> mItemList;
-    /**
-     * 总内容表
-     */
-    private List<String> mItemTotalList;
-    /**
-     * 标题表
-     */
-    private List<String> mTitleList;
 
     public Adapter(Context context, List<List<String>> itemList, List<String> titleList) {
-        setItemList(itemList);
-        setTitleList(titleList);
+        super(itemList, titleList);
         mContext = context;
-        mItemList = itemList;
-        mItemTotalList = getItemTotalList();
-        mTitleList = titleList;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateTitleViewHolder(ViewGroup parent, int viewType) {
-        return new TitleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.listview_header, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == GroupAdapter.TYPE_TITLE) {
+
+            return new TitleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.listview_header, parent, false));
+        } else if (viewType == GroupAdapter.TYPE_ITEM) {
+
+            return new ItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false));
+        }
+        return null;
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
-        return new ItemViewHolder(LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false));
-    }
 
     @Override
-    public void onBindTitleViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindTitleViewHolder(RecyclerView.ViewHolder holder, String title, int position) {
         TitleViewHolder viewHolder = (TitleViewHolder) holder;
-        viewHolder.tv_header.setText(mTitleList.get(position));
+        viewHolder.tv_header.setText(title);
 
     }
 
     @Override
-    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, String item, int position) {
         ItemViewHolder viewHolder = (ItemViewHolder) holder;
-        viewHolder.tv_content.setText(mItemTotalList.get(position));
+        viewHolder.tv_content.setText(item);
     }
 
     public class TitleViewHolder extends RecyclerView.ViewHolder {

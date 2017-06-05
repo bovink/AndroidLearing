@@ -1,7 +1,6 @@
 package com.bovink.androidlearing;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,42 +26,26 @@ public abstract class GroupAdapter<I, T> extends RecyclerView.Adapter<RecyclerVi
      */
     private List<T> titleList;
 
-//    private Context context;
-
     /**
      * 标题类型
      */
-    private final int TYPE_TITLE = 0;
+    public static final int TYPE_TITLE = 0;
     /**
      * 内容类型
      */
-    private final int TYPE_ITEM = 1;
+    public static final int TYPE_ITEM = 1;
 
     /**
      * 当前内容表的索引
      */
     private int curIndex = 0;
 
-//    public GroupAdapter(List<List<I>> itemList, List<T> titleList, Context context) {
-//        this.itemList = itemList;
-//        this.titleList = titleList;
-//        this.context = context;
-//
-//        itemTotalList = new ArrayList<>();
-//
-//        for (int i = 0; i < itemList.size(); i++) {
-//            List<I> list = itemList.get(i);
-//            for (int j = 0; j < list.size(); j++) {
-//                itemTotalList.add(list.get(j));
-//            }
-//        }
-//    }
-
-
-    public void setItemList(List<List<I>> itemList) {
+    public GroupAdapter(List<List<I>> itemList, List<T> titleList) {
         this.itemList = itemList;
+        this.titleList = titleList;
 
         itemTotalList = new ArrayList<>();
+
         for (int i = 0; i < itemList.size(); i++) {
             List<I> list = itemList.get(i);
             for (int j = 0; j < list.size(); j++) {
@@ -71,66 +54,38 @@ public abstract class GroupAdapter<I, T> extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
+
     public List<I> getItemTotalList() {
         return itemTotalList;
     }
 
-    public void setTitleList(List<T> titleList) {
-        this.titleList = titleList;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_TITLE) {
-            return onCreateTitleViewHolder(parent, viewType);
-        } else if (viewType == TYPE_ITEM) {
-            return onCreateItemViewHolder(parent, viewType);
-        }
-        return null;
-    }
-
-    /**
-     * 创建标题栏
-     * @param parent
-     * @param viewType
-     * @return
-     */
-    public abstract RecyclerView.ViewHolder onCreateTitleViewHolder(ViewGroup parent, int viewType);
-
-    /**
-     * 创建内容栏
-     * @param parent
-     * @param viewType
-     * @return
-     */
-    public abstract RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType);
 
     /**
      * 绑定标题栏数据
+     *
      * @param holder
      * @param position
      */
-    public abstract void onBindTitleViewHolder(RecyclerView.ViewHolder holder, int position);
+    public abstract void onBindTitleViewHolder(RecyclerView.ViewHolder holder, T title, int position);
 
     /**
      * 绑定内容栏数据
+     *
      * @param holder
      * @param position
      */
-    public abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position);
+    public abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, I item, int position);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int type = getItemViewTypeInner(position);
         if (type == TYPE_ITEM) {
-//            holder.tv_content.setText((String) itemTotalList.get(position - curIndex - 1));
-            System.out.println("position = " + position);
-            System.out.println("curIndex = " + curIndex);
-            onBindItemViewHolder(holder, position - curIndex - 1);
+
+            onBindItemViewHolder(holder, itemTotalList.get(position - curIndex - 1), position - curIndex - 1);
 
         } else if (type == TYPE_TITLE) {
-//            holder.tv_content.setText((String) titleList.get(curIndex));
-            onBindTitleViewHolder(holder, curIndex);
+
+            onBindTitleViewHolder(holder, titleList.get(curIndex), curIndex);
         }
 
     }
