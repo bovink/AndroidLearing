@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 /**
  * com.bovink.androidlearing.activity
@@ -28,7 +31,17 @@ public class TransformActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_transform)
     void clickTransform() {
-        System.out.println("TransformActivity.clickTransform");
+
+        testBuffer();
+    }
+
+    private void testBuffer() {
+        Observable<List<String>> observable = Observable
+                .just("one", "two", "three", "four")
+                .buffer(2);
+
 
     }
+
+
 }
