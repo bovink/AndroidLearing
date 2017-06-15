@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.bovink.androidlearing.create.CreateActivity;
+import com.bovink.androidlearing.activity.TransformActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_main)
     void showCreateActivity() {
-        Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
+        Intent intent = new Intent(this, TransformActivity.class);
         startActivity(intent);
     }
 }

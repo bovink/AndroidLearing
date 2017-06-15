@@ -1,4 +1,4 @@
-package com.bovink.androidlearing.create;
+package com.bovink.androidlearing.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,7 +43,6 @@ public class CreateActivity extends AppCompatActivity {
     void clickBtn(Button button) {
 
         testTimer();
-
     }
 
     /**
