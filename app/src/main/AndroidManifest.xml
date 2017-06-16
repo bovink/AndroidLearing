@@ -18,6 +18,7 @@
 
         <activity android:name=".activity.CreateActivity"/>
         <activity android:name=".activity.TransformActivity"/>
+        <activity android:name=".activity.FilterActivity"/>
     </application>
 
 </manifest>
