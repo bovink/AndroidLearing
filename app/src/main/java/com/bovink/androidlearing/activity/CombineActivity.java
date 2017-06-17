@@ -6,7 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.TestScheduler;
 
 /**
  * com.bovink.androidlearing.activity
@@ -21,10 +30,76 @@ public class CombineActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combine);
+        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.btn_combine)
     void clickCombine() {
 
+        testMerge();
+
+    }
+
+    private void testCombineLatest() {
+
+        Observable<String> observable1 = Observable.just("one", "two");
+        Observable<String> observable2 = Observable.just("three", "four");
+
+
+        Observable.combineLatest(observable1.buffer(2), observable2, (strings, s) -> {
+            String result = "";
+            for (int i = 0; i < strings.size(); i++) {
+                result += strings.get(i) + " ";
+            }
+            return result + s;
+        })
+                .subscribe(s -> System.out.println("s = " + s));
+    }
+
+    private void testJoin() {
+        TestScheduler scheduler = new TestScheduler();
+        Observable<Long> observable1 = Observable
+                .interval(5, TimeUnit.SECONDS, scheduler).take(5);
+
+        Observable<Long> observable2 = Observable
+                .interval(10, TimeUnit.SECONDS, scheduler)
+                .map(i -> i + 10).take(5);
+
+        observable1.join(observable2, new Function<Long, ObservableSource<Long>>() {
+            @Override
+            public ObservableSource<Long> apply(@NonNull Long aLong) throws Exception {
+                return Observable.just(aLong).delay(4, TimeUnit.SECONDS, scheduler);
+            }
+        }, new Function<Long, ObservableSource<Long>>() {
+            @Override
+            public ObservableSource<Long> apply(@NonNull Long aLong) throws Exception {
+                return Observable.just(aLong).delay(1, TimeUnit.SECONDS, scheduler);
+            }
+        }, new BiFunction<Long, Long, Long>() {
+            @Override
+            public Long apply(@NonNull Long aLong, @NonNull Long aLong2) throws Exception {
+                return aLong + aLong2;
+            }
+        }).subscribe(i -> System.out.println("i = " + i));
+
+        scheduler.advanceTimeBy(5, TimeUnit.MINUTES);
+
+        // 手动画图可以理解
+    }
+
+    private void testMerge() {
+        TestScheduler scheduler = new TestScheduler();
+        Observable<Long> observable1 = Observable
+                .interval(1000, TimeUnit.MILLISECONDS, scheduler)
+                .take(5);
+        Observable<Long> observable2 = Observable
+                .interval(1200, 1000, TimeUnit.MILLISECONDS, scheduler)
+                .map(i -> i + 10)
+                .take(5);
+
+        Observable.merge(observable1, observable2)
+                .subscribe(i -> System.out.println("i = " + i));
+
+        scheduler.advanceTimeBy(1, TimeUnit.MINUTES);
     }
 }
