@@ -16,9 +16,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.CreateActivity"/>
-        <activity android:name=".activity.TransformActivity"/>
-        <activity android:name=".activity.FilterActivity"/>
+        <activity android:name=".activity.CreateActivity" />
+        <activity android:name=".activity.TransformActivity" />
+        <activity android:name=".activity.FilterActivity" />
+        <activity android:name=".activity.CombineActivity" />
+        <activity android:name=".activity.ConditionalActivity" />
+        <activity android:name=".activity.UtilityActivity" />
     </application>
 
 </manifest>
