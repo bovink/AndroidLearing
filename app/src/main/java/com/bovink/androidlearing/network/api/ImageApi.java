@@ -1,4 +1,4 @@
-package com.bovink.androidlearing;
+package com.bovink.androidlearing.network.api;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

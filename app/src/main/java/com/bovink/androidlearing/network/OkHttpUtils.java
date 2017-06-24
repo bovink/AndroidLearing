@@ -1,4 +1,4 @@
-package com.bovink.androidlearing;
+package com.bovink.androidlearing.network;
 
 import com.bovink.androidlearing.download.ProgressInterceptor;
 import com.bovink.androidlearing.download.ProgressListener;
@@ -18,10 +18,18 @@ public class OkHttpUtils {
     public static OkHttpClient okHttpClient(ProgressListener listener) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-//        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         ProgressInterceptor progressInterceptor = new ProgressInterceptor(listener);
         builder.addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(progressInterceptor);
+        return builder.build();
+    }
+
+    public static OkHttpClient okHttpClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }
 }

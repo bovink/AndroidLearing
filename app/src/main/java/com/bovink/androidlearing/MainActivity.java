@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.bovink.androidlearing.download.ProgressListener;
+import com.bovink.androidlearing.network.ApiUtils;
+import com.bovink.androidlearing.network.api.ImageApi;
 
 import java.io.File;
 import java.io.FileOutputStream;

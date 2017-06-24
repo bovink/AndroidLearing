@@ -1,4 +1,4 @@
-package com.bovink.androidlearing;
+package com.bovink.androidlearing.network;
 
 /**
  * com.bovink.androidlearing
@@ -9,5 +9,5 @@ package com.bovink.androidlearing;
 
 public class HttpUtils {
 
-    public static String Host = "http://192.168.0.117:8080";
+    public static String Host = "http://192.168.0.106:8080";
 }
