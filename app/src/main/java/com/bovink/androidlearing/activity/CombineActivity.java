@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.TestScheduler;
 
@@ -36,7 +37,8 @@ public class CombineActivity extends AppCompatActivity {
     @OnClick(R.id.btn_combine)
     void clickCombine() {
 
-        testMerge();
+//        testSwitchOnNext();
+        testZip();
 
     }
 
@@ -101,5 +103,47 @@ public class CombineActivity extends AppCompatActivity {
                 .subscribe(i -> System.out.println("i = " + i));
 
         scheduler.advanceTimeBy(1, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 测试startWith
+     */
+    private void testStartWith() {
+        Observable<String> observable = Observable.just("one", "two").startWith("hello");
+
+        observable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                System.out.println("s = " + s);
+            }
+        });
+    }
+
+    /**
+     * 测试SwitchOnNext
+     */
+    private void testSwitchOnNext() {
+        System.out.println("CombineActivity.testSwitchOnNext");
+        Observable<String> observable1 = Observable.zip(Observable.just("one", "two", "three"),
+                Observable.interval(1, TimeUnit.SECONDS),
+                (string, along) -> string);
+        Observable<Integer> observable2 = Observable.zip(Observable.just(10, 11, 12),
+                Observable.interval(1, TimeUnit.SECONDS),
+                (i, along) -> i);
+
+
+        Observable.switchOnNext(Observable.zip(Observable.just(observable1, observable2),
+                Observable.interval(2, TimeUnit.SECONDS),
+                (observable, aLong) -> observable))
+                .subscribe(string -> System.out.println("string = " + string));
+
+
+    }
+
+    private void testZip() {
+        Observable.zip(Observable.just("one", "two", "three","four"),
+                Observable.just(1, 2, 3 ),
+                (string, i) -> string + i)
+                .subscribe(string -> System.out.println("string = " + string));
     }
 }

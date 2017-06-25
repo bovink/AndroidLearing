@@ -230,19 +230,7 @@ public class CreateActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * 测试startWith
-     */
-    private void testStartWith() {
-        Observable<String> observable = Observable.just("one", "two").startWith("hello");
-
-        observable.subscribe(new Consumer<String>() {
-            @Override
-            public void accept(@NonNull String s) throws Exception {
-                System.out.println("s = " + s);
-            }
-        });
-    }
+    //目前没有在RxJava2中发现Start方法
 
     /**
      * 测试timer
