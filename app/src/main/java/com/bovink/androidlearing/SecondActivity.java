@@ -6,9 +6,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewTreeObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * com.bovink.androidlearing
@@ -23,6 +28,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @BindView(R.id.nsv_main)
     NestedScrollView scrollView;
+    ImageAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,15 +38,28 @@ public class SecondActivity extends AppCompatActivity {
 
         imageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         imageRecyclerView.setNestedScrollingEnabled(false);
-        ImageAdapter adapter = new ImageAdapter(20, this);
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapter = new ImageAdapter(this);
+
+        imageRecyclerView.setAdapter(adapter);
+
+        imageRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onChanged() {
-                super.onChanged();
-
-
+            public void onGlobalLayout() {
+                System.out.println("SecondActivity.onGlobalLayout");
+                scrollView.scrollTo(0, scrollView.getChildAt(0).getMeasuredHeight() - scrollView.getMeasuredHeight());
             }
         });
-        imageRecyclerView.setAdapter(adapter);
+
+    }
+
+    @OnClick(R.id.btn_last)
+    void last() {
+
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            stringList.add("one :" + i);
+        }
+        adapter.addData(stringList);
+        adapter.notifyDataSetChanged();
     }
 }

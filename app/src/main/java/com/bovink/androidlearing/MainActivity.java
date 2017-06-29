@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
         GridLayoutManager manager = new GridLayoutManager(this, 4);
         imageRecyclerView.setLayoutManager(manager);
-        ImageAdapter adapter = new ImageAdapter(20, this);
+        ImageAdapter adapter = new ImageAdapter(this);
         imageRecyclerView.addItemDecoration(new ImageDecoration(4, 5));
         imageRecyclerView.setAdapter(adapter);
 

@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -18,11 +21,11 @@ import butterknife.ButterKnife;
  */
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
-    private int count;
     private Context context;
 
-    public ImageAdapter(int count, Context context) {
-        this.count = count;
+    private List<String> strings = new ArrayList<>();
+
+    public ImageAdapter(Context context) {
         this.context = context;
     }
 
@@ -34,12 +37,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
 
-        holder.indexTextView.setText(position + "");
+        holder.indexTextView.setText(strings.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return count;
+        return strings.size();
+    }
+
+    public void addData(List<String> addStrings) {
+        strings.addAll(addStrings);
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
