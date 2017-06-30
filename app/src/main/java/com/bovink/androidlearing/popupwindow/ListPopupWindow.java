@@ -1,9 +1,9 @@
 package com.bovink.androidlearing.popupwindow;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bovink.androidlearing.R;
+import com.bovink.androidlearing.ScreenUtils;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ListPopupWindow extends PopupWindow {
     private RecyclerView recyclerView;
     private List<String> list;
 
+
     public ListPopupWindow(Context context, List<String> list) {
         this.list = list;
 
@@ -39,14 +41,27 @@ public class ListPopupWindow extends PopupWindow {
         recyclerView.setAdapter(new ImageFolderAdapter(context));
 
         setContentView(root);
-        setTouchable(true);
-        setFocusable(true);
 
+        setFocusable(true);
         setOutsideTouchable(true);
-        ColorDrawable drawable = new ColorDrawable(0x323232);
-        setBackgroundDrawable(drawable);
-        setWidth(700);
-        setHeight(600);
+
+        setWidth(ScreenUtils.getScreenWidth(context));
+
+        setHeight(ScreenUtils.getScreenHeight(context) - 400);
+
+
+        setAnimationStyle(R.style.PopupWindow_Animation);
+
+    }
+
+    public void switchWindow(View v) {
+
+        if (!isShowing()) {
+            showAtLocation(v, Gravity.BOTTOM, 0, v.getMeasuredHeight());
+        } else {
+            dismiss();
+        }
+
 
     }
 
@@ -65,8 +80,14 @@ public class ListPopupWindow extends PopupWindow {
         }
 
         @Override
-        public void onBindViewHolder(ImageFolderViewHolder holder, int position) {
+        public void onBindViewHolder(ImageFolderViewHolder holder, final int position) {
             holder.folderNameTextView.setText(list.get(position));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("position = " + position);
+                }
+            });
         }
 
         @Override
