@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,25 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_login_a)
     void loginA() {
 
+        connectA();
+        heartbeatA();
+    }
+
+    @OnClick(R.id.btn_login_b)
+    void loginB() {
+        connectB();
+        heartbeatB();
+    }
+
+    private void connectA() {
+
         new Thread() {
             @Override
             public void run() {
 
                 try {
                     socketa = new Socket("59.175.213.77", 30161);
+                    retryA = false;
                     if (socketa.isConnected()) {
                         System.out.println("connected");
 
@@ -70,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         outputStream.write(msg.getBytes("utf-8"));
                         outputStream.flush();
                     }
+                } catch (SocketException e) {
+                    retryA = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    @OnClick(R.id.btn_login_b)
-    void loginB() {
+    private void connectB() {
         new Thread() {
             @Override
             public void run() {
 
                 try {
                     socketb = new Socket("59.175.213.77", 30161);
+                    retryB = false;
                     if (socketb.isConnected()) {
                         System.out.println("connected");
                         listenB();
@@ -94,8 +110,55 @@ public class MainActivity extends AppCompatActivity {
                         outputStream.write(msg.getBytes("utf-8"));
                         outputStream.flush();
                     }
+                } catch (SocketException e) {
+                    retryB = true;
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            }
+        }.start();
+
+    }
+
+    private boolean retryA = false;
+    private boolean retryB = false;
+
+
+    private void heartbeatA() {
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (retryA) {
+                        connectA();
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+        }.start();
+    }
+
+    private void heartbeatB() {
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (retryB) {
+                        connectB();
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
             }
         }.start();
@@ -114,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
                         String s = URLDecoder.decode(bufferedReader.readLine(), "utf-8");
                         System.out.println("s = " + s);
                     }
+                } catch (SocketException e) {
+                    retryB = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -137,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
                     String msgSend = gson.toJson(msg) + "\n";
                     outputStream.write(msgSend.getBytes("utf-8"));
                     outputStream.flush();
+                } catch (SocketException e) {
+                    retryA = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
