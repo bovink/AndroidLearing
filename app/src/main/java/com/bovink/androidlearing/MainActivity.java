@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     socketb = new Socket("59.175.213.77", 30161);
                     if (socketb.isConnected()) {
                         System.out.println("connected");
+                        listenB();
 
                         OutputStream outputStream = socketb.getOutputStream();
                         String msg = gson.toJson(userB) + "\n";
@@ -99,22 +101,47 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    private void listenB() {
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    InputStream inputStream = socketb.getInputStream();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    while (true) {
+                        String s = URLDecoder.decode(bufferedReader.readLine(), "utf-8");
+                        System.out.println("s = " + s);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     @OnClick(R.id.btn_send_a)
     void sendA() {
-        MessageSender msg = new MessageSender();
-        msg.setGroupId("dudao_single");
-        msg.setMessNote(et_text_a.getText().toString());
-        msg.setMessType("1");
-        msg.setReceiverUid("126");
+        new Thread() {
+            @Override
+            public void run() {
+                MessageSender msg = new MessageSender();
+                msg.setGroupId("dudao_single");
+                msg.setMessNote(et_text_a.getText().toString());
+                msg.setMessType("1");
+                msg.setReceiverUid("126");
 
-        try {
-            OutputStream outputStream = socketa.getOutputStream();
-            String msgSend = gson.toJson(msg) + "\n";
-            outputStream.write(msgSend.getBytes("utf-8"));
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                try {
+                    OutputStream outputStream = socketa.getOutputStream();
+                    String msgSend = gson.toJson(msg) + "\n";
+                    outputStream.write(msgSend.getBytes("utf-8"));
+                    outputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     @OnClick(R.id.btn_send_b)
