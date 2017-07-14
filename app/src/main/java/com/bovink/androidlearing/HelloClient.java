@@ -15,6 +15,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class HelloClient {
 
+    HelloClientIntHandler handler;
+
+    public HelloClient(User user) {
+        handler = new HelloClientIntHandler(user);
+    }
+
     public void connect(String host, int port) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -26,7 +32,7 @@ public class HelloClient {
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new HelloClientIntHandler());
+                    ch.pipeline().addLast(handler);
                 }
             });
 
@@ -41,8 +47,7 @@ public class HelloClient {
 
     }
 
-    public static void main(String[] args) throws Exception {
-        HelloClient client = new HelloClient();
-        client.connect("192.168.0.121", 9988);
+    public void sendMessage(char[] json) {
+        handler.sendMessage(json);
     }
 }

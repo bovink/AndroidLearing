@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_login_a)
     void loginA() {
         try {
-            HelloClient client = new HelloClient();
+            HelloClient client = new HelloClient(userA);
             client.connect("59.175.213.77", 30161);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_login_b)
     void loginB() {
         try {
-            HelloClient client = new HelloClient();
+            HelloClient client = new HelloClient(userB);
             client.connect("59.175.213.77", 30161);
         } catch (Exception e) {
             e.printStackTrace();
