@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("connected");
 
                         OutputStream outputStream = socketa.getOutputStream();
-                        String msg = gson.toJson(userA) + "\n";
-                        outputStream.write(msg.getBytes("utf-8"));
+                        outputStream.write(userA.toString().getBytes("utf-8"));
                         outputStream.flush();
                     }
                 } catch (SocketException e) {
@@ -199,8 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     OutputStream outputStream = socketa.getOutputStream();
-                    String msgSend = gson.toJson(msg) + "\n";
-                    outputStream.write(msgSend.getBytes("utf-8"));
+                    outputStream.write(msg.toString().getBytes("utf-8"));
                     outputStream.flush();
                 } catch (SocketException e) {
                     retryA = true;

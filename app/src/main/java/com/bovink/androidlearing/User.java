@@ -1,5 +1,7 @@
 package com.bovink.androidlearing;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,7 @@ import java.util.List;
  */
 
 public class User {
+    private Gson gson = new Gson();
     private List<String> groupIds;
     private String userUid;
     private String userName;
@@ -44,5 +47,10 @@ public class User {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    @Override
+    public String toString() {
+        return gson.toJson(this) + "\n";
     }
 }

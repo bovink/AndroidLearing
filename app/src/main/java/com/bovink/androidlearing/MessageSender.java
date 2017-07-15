@@ -1,11 +1,14 @@
 package com.bovink.androidlearing;
 
+import com.google.gson.Gson;
+
 /**
  * @author Retina975
  * @since 2017/07/14
  */
 
 public class MessageSender {
+    private Gson gson = new Gson();
     private String messNote;
     private String messType;
     private String groupId;
@@ -41,5 +44,10 @@ public class MessageSender {
 
     public void setReceiverUid(String receiverUid) {
         this.receiverUid = receiverUid;
+    }
+
+    @Override
+    public String toString() {
+        return gson.toJson(this) + "\n";
     }
 }
