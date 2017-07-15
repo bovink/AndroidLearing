@@ -20,6 +20,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     User userA;
@@ -68,28 +73,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectA() {
+        CompositeDisposable disposable = new CompositeDisposable();
+        disposable.add(Single.just(userA)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new DisposableSingleObserver<User>() {
+                    @Override
+                    public void onSuccess(@NonNull User user) {
+                        try {
+                            socketa = new Socket("59.175.213.77", 30161);
+                            retryA = false;
+                            if (socketa.isConnected()) {
+                                System.out.println("connected");
 
-        new Thread() {
-            @Override
-            public void run() {
-
-                try {
-                    socketa = new Socket("59.175.213.77", 30161);
-                    retryA = false;
-                    if (socketa.isConnected()) {
-                        System.out.println("connected");
-
-                        OutputStream outputStream = socketa.getOutputStream();
-                        outputStream.write(userA.toString().getBytes("utf-8"));
-                        outputStream.flush();
+                                OutputStream outputStream = socketa.getOutputStream();
+                                outputStream.write(user.toString().getBytes("utf-8"));
+                                outputStream.flush();
+                            }
+                        } catch (SocketException e) {
+                            retryA = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (SocketException e) {
-                    retryA = true;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                }));
+
+//        new Thread() {
+//            @Override
+//            public void run() {
+//
+//                try {
+//                    socketa = new Socket("59.175.213.77", 30161);
+//                    retryA = false;
+//                    if (socketa.isConnected()) {
+//                        System.out.println("connected");
+//
+//                        OutputStream outputStream = socketa.getOutputStream();
+//                        outputStream.write(userA.toString().getBytes("utf-8"));
+//                        outputStream.flush();
+//                    }
+//                } catch (SocketException e) {
+//                    retryA = true;
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
     }
 
     private void connectB() {
