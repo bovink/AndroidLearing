@@ -1,10 +1,11 @@
 package com.bovink.androidlearing;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearning.gen.UserDao;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,15 +16,17 @@ public class MainActivity extends AppCompatActivity {
 
         UserDao userDao = GreenDaoManager.getInstance().getNewSession().getUserDao();
 
-        User user = new User(null, "lilei", 16);
-        userDao.insert(user);
 
-        SharedPreferences sp = getSharedPreferences("setting", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("name", "lilei");
-        editor.putString("password", "123456");
-        editor.apply();
+        SharedPreferencesUtil sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this, "setting");
+        sharedPreferencesUtil
+                .put("one", "one")
+                .put("sex", "male")
+                .put("age", 16);
 
+        Map<String, ?> map =  sharedPreferencesUtil.getAll();
+
+        System.out.println("map.get(\"one\") = " + map.get("one"));
+        System.out.println("map.get(\"age\") = " + map.get("age"));
 
     }
 }

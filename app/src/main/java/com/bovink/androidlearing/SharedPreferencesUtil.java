@@ -3,6 +3,8 @@ package com.bovink.androidlearing;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -66,4 +68,52 @@ public class SharedPreferencesUtil {
         return this;
     }
 
+    public String getString(String key) {
+        return sp.getString(key, "defalut");
+    }
+
+    public Boolean setBoolean(String key) {
+        return sp.getBoolean(key, false);
+    }
+
+    public Float getFloat(String key) {
+        return sp.getFloat(key, -1.0f);
+    }
+
+    public Integer getInt(String key) {
+        return sp.getInt(key, -1);
+    }
+
+    public Long getLong(String key) {
+        return sp.getLong(key, -1);
+    }
+
+    public Set<String> getStringSet(String key) {
+        Set<String> strings = sp.getStringSet(key, null);
+        if (strings == null) {
+            strings = new HashSet<>();
+        }
+
+        return strings;
+    }
+
+    public Map<String, ?> getAll() {
+        return sp.getAll();
+    }
+
+    public Boolean contains(String key) {
+        return sp.contains(key);
+    }
+
+    public void clear() {
+        editor = sp.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void remove(String key) {
+        editor = sp.edit();
+        editor.remove(key);
+        editor.apply();
+    }
 }
