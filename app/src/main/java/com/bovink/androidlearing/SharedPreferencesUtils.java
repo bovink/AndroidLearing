@@ -12,56 +12,56 @@ import java.util.Set;
  * @since 2017/07/21
  */
 
-public class SharedPreferencesUtil {
+public class SharedPreferencesUtils {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
-    private SharedPreferencesUtil(Context context, String name) {
+    private SharedPreferencesUtils(Context context, String name) {
 
         sp = context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
-    public static SharedPreferencesUtil getInstance(Context context, String name) {
-        return new SharedPreferencesUtil(context, name);
+    public static SharedPreferencesUtils getInstance(Context context, String name) {
+        return new SharedPreferencesUtils(context, name);
     }
 
-    public SharedPreferencesUtil put(String key, String value) {
+    public SharedPreferencesUtils put(String key, String value) {
         editor = sp.edit();
         editor.putString(key, value);
         editor.apply();
         return this;
     }
 
-    public SharedPreferencesUtil put(String key, Boolean value) {
+    public SharedPreferencesUtils put(String key, Boolean value) {
         editor = sp.edit();
         editor.putBoolean(key, value);
         editor.apply();
         return this;
     }
 
-    public SharedPreferencesUtil put(String key, Float value) {
+    public SharedPreferencesUtils put(String key, Float value) {
         editor = sp.edit();
         editor.putFloat(key, value);
         editor.apply();
         return this;
     }
 
-    public SharedPreferencesUtil put(String key, int value) {
+    public SharedPreferencesUtils put(String key, int value) {
         editor = sp.edit();
         editor.putInt(key, value);
         editor.apply();
         return this;
     }
 
-    public SharedPreferencesUtil put(String key, long value) {
+    public SharedPreferencesUtils put(String key, long value) {
         editor = sp.edit();
         editor.putLong(key, value);
         editor.apply();
         return this;
     }
 
-    public SharedPreferencesUtil put(String key, Set<String> value) {
+    public SharedPreferencesUtils put(String key, Set<String> value) {
         editor = sp.edit();
         editor.putStringSet(key, value);
         editor.apply();
@@ -72,7 +72,7 @@ public class SharedPreferencesUtil {
         return sp.getString(key, "defalut");
     }
 
-    public Boolean setBoolean(String key) {
+    public Boolean getBoolean(String key) {
         return sp.getBoolean(key, false);
     }
 

@@ -17,13 +17,13 @@ public class MainActivity extends AppCompatActivity {
         UserDao userDao = GreenDaoManager.getInstance().getNewSession().getUserDao();
 
 
-        SharedPreferencesUtil sharedPreferencesUtil = SharedPreferencesUtil.getInstance(this, "setting");
-        sharedPreferencesUtil
+        SharedPreferencesUtils sharedPreferencesUtils = SharedPreferencesUtils.getInstance(this, "setting");
+        sharedPreferencesUtils
                 .put("one", "one")
                 .put("sex", "male")
                 .put("age", 16);
 
-        Map<String, ?> map =  sharedPreferencesUtil.getAll();
+        Map<String, ?> map =  sharedPreferencesUtils.getAll();
 
         System.out.println("map.get(\"one\") = " + map.get("one"));
         System.out.println("map.get(\"age\") = " + map.get("age"));
