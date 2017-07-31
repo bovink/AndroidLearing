@@ -1,7 +1,10 @@
 package com.bovink.androidlearing;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -19,9 +22,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-//        Bitmap bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        imageView.draw(canvas);
-//        realIv.setImageBitmap(bitmap);
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+
+                ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                float beishu = params.height / params.width;
+                System.out.println("beishu = " + beishu);
+
+
+                params.width = ScreenUtils.getScreenWidth(MainActivity.this) / 4;
+                params.height = (int) (params.width * beishu);
+
+                imageView.setLayoutParams(params);
+            }
+        };
+        handler.sendEmptyMessageDelayed(0, 1000);
+
     }
 }
