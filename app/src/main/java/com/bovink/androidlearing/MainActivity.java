@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        imageView.setBackgroundResource(R.mipmap.ic_launcher);
+        imageView.setBackgroundResource(R.drawable.test);
+//        imageView.setDirection(WeiXinImageView.Direction.RIGHT);
 
     }
 }
