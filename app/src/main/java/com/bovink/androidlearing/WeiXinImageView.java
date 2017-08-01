@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 /**
  * @author Retina975
@@ -16,17 +18,29 @@ import android.util.AttributeSet;
  */
 
 public class WeiXinImageView extends AppCompatImageView {
+    private Context context;
+    private int resize;
 
     public WeiXinImageView(Context context) {
         super(context);
+        init(context);
     }
 
     public WeiXinImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public WeiXinImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
+        this.context = context;
+        resize = DensityUtils.dpToPx(context, 150);
+
+
     }
 
     @Override
@@ -36,6 +50,38 @@ public class WeiXinImageView extends AppCompatImageView {
         super.draw(canvas);
         drawStroke(canvas);
     }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (oldw == 0 && oldh == 0) {
+
+            final float time = ((float) h) / ((float) w);
+
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    ViewGroup.LayoutParams params = getLayoutParams();
+                    // 竖向图
+                    if (time >= 1) {
+
+                        params.width = (int) (resize / time);
+                        params.height = resize;
+                    } else {
+                        // 横向图
+
+                        params.width = resize;
+                        params.height = (int) (resize * time);
+                    }
+                    setLayoutParams(params);
+                }
+            });
+
+        }
+    }
+
 
     /**
      * 切图
@@ -75,7 +121,7 @@ public class WeiXinImageView extends AppCompatImageView {
         int space = 50;
 
         Paint penPaint = new Paint();
-        penPaint.setColor(Color.GREEN);
+        penPaint.setColor(Color.GRAY);
         penPaint.setAntiAlias(true);
         penPaint.setStyle(Paint.Style.STROKE);
 
