@@ -8,7 +8,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.iv_test)
-    WeiXinImageView imageView;
+    ChatImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

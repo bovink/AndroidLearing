@@ -19,7 +19,7 @@ import android.view.ViewGroup;
  * @since 2017/07/31
  */
 
-public class WeiXinImageView extends AppCompatImageView {
+public class ChatImageView extends AppCompatImageView {
     private Context context;
     /**
      * 图片缩放的最大尺寸
@@ -40,24 +40,26 @@ public class WeiXinImageView extends AppCompatImageView {
     }
 
 
-    public WeiXinImageView(Context context) {
+    public ChatImageView(Context context) {
         super(context);
         init(context);
     }
 
-    public WeiXinImageView(Context context, @Nullable AttributeSet attrs) {
+    public ChatImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public WeiXinImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ChatImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(Context context) {
         this.context = context;
-        resize = DensityUtils.dpToPx(context, 150);
+
+        float scale = context.getResources().getDisplayMetrics().density;
+        resize = (int) (150 * scale + 0.5f);
 
 
     }

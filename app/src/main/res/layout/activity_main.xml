@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
-    <com.bovink.androidlearing.WeiXinImageView
+    <com.bovink.androidlearing.ChatImageView
         android:id="@+id/iv_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
