@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -16,7 +18,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.TestScheduler;
+
 
 /**
  * com.bovink.androidlearing.activity
@@ -37,24 +41,79 @@ public class CombineActivity extends AppCompatActivity {
     @OnClick(R.id.btn_combine)
     void clickCombine() {
 
-//        testSwitchOnNext();
-        testZip();
+        System.out.println("CombineActivity.clickCombine");
+        testCombineLatest4();
 
     }
 
-    private void testCombineLatest() {
-
-        Observable<String> observable1 = Observable.just("one", "two");
-        Observable<String> observable2 = Observable.just("three", "four");
-
-
-        Observable.combineLatest(observable1.buffer(2), observable2, (strings, s) -> {
-            String result = "";
-            for (int i = 0; i < strings.size(); i++) {
-                result += strings.get(i) + " ";
+    private void testCombineLatest1() {
+        Function<Object[], Integer> function = objects -> {
+            int sum = 0;
+            for (Object object : objects) {
+                sum += (Integer) object;
             }
-            return result + s;
-        })
+            return sum;
+        };
+
+        Observable<Object> observable1 = Observable.zip(Observable.just(1, 2, 3),
+                Observable.interval(1000, TimeUnit.MILLISECONDS)
+                , (integer, aLong) -> integer);
+
+        Observable<Object> observable2 = Observable.zip(Observable.just(4, 5, 6),
+                Observable.interval(1500, TimeUnit.MILLISECONDS)
+                , (integer, aLong) -> integer);
+
+        Observable.combineLatest(function, 1, observable1, observable2)
+                .subscribe(integer -> {
+                    System.out.println("integer = " + integer);
+                });
+    }
+
+    private void testCombineLatest2() {
+        Function<Object[], String> function = objects -> objects[0].toString() + " " + objects[1].toString();
+        List<Observable<String>> observableList = new ArrayList<>();
+
+        observableList.add(Observable.zip(Observable.just("one", "two"),
+                Observable.interval(1000, TimeUnit.MILLISECONDS),
+                (s, aLong) -> s));
+        observableList.add(Observable.zip(Observable.just("three", "four"),
+                Observable.interval(1500, TimeUnit.MILLISECONDS),
+                (s, aLong) -> s));
+
+        Observable.combineLatest(observableList, function)
+                .subscribe(s -> {
+                    System.out.println("s = " + s);
+                });
+
+    }
+
+    private void testCombineLatest3() {
+        Function<Object[], String> function = objects -> objects[0].toString() + " " + objects[1].toString();
+
+        Observable<String>[] observables = new Observable[2];
+
+        observables[0] = Observable.zip(Observable.just("1", "2", "3"),
+                Observable.interval(1000, TimeUnit.MILLISECONDS), (s, aLong) -> s);
+        observables[1] = Observable.zip(Observable.just("one", "two", "three"),
+                Observable.interval(1500, TimeUnit.MILLISECONDS), (s, aLong) -> s);
+
+        Observable.combineLatest(observables, function).subscribe(s -> {
+            System.out.println("s = " + s);
+        });
+
+    }
+
+    private void testCombineLatest4() {
+        Function3<String, Integer, Integer, String> function = (s, i1, i2) -> s + " " + i1 * i2;
+
+        Observable<String> observable1 = Observable.zip(Observable.just("one", "two", "three"),
+                Observable.interval(1000, TimeUnit.MILLISECONDS), (s, aLong) -> s);
+        Observable<Integer> observable2 = Observable.zip(Observable.just(1, 2, 3),
+                Observable.interval(1500, TimeUnit.MILLISECONDS), (i, aLong) -> i);
+        Observable<Integer> observable3 = Observable.zip(Observable.just(10, 100, 1000),
+                Observable.interval(2000, TimeUnit.MILLISECONDS), (i, aLong) -> i);
+
+        Observable.combineLatest(observable1, observable2, observable3, function)
                 .subscribe(s -> System.out.println("s = " + s));
     }
 
@@ -141,8 +200,8 @@ public class CombineActivity extends AppCompatActivity {
     }
 
     private void testZip() {
-        Observable.zip(Observable.just("one", "two", "three","four"),
-                Observable.just(1, 2, 3 ),
+        Observable.zip(Observable.just("one", "two", "three", "four"),
+                Observable.just(1, 2, 3),
                 (string, i) -> string + i)
                 .subscribe(string -> System.out.println("string = " + string));
     }

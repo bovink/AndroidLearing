@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        testFlowable();
     }
 
     private void testFlowable() {
