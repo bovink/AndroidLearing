@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.bovink.androidlearing.activity.CombineActivity;
+import com.bovink.androidlearing.activity.TransformActivity;
 
 import org.reactivestreams.Subscription;
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_main)
     void showCreateActivity() {
-        Intent intent = new Intent(this, CombineActivity.class);
+        Intent intent = new Intent(this, TransformActivity.class);
         startActivity(intent);
     }
 }
