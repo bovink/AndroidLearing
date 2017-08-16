@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * com.bovink.androidlearing.activity
@@ -38,7 +40,8 @@ public class TransformActivity extends AppCompatActivity {
     void clickTransform() {
 
 //        testScan();
-        testWindow7();
+//        testWindow7();
+        testFlatMap();
     }
 
     private void testBuffer() {
@@ -52,13 +55,71 @@ public class TransformActivity extends AppCompatActivity {
 
     }
 
-    private void testFlatMap() {
-        String[] s1 = {"one", "two"};
-        String[] s2 = {"three", "four"};
-        Observable.just(s1, s2)
-                .flatMap(Observable::fromArray)
-                .subscribe(s -> System.out.println("s = " + s));
 
+    /**
+     * 完成
+     */
+    private void testFlatMap() {
+        // 字符串列表
+        List<String> fruits = Arrays.asList("apple", "banana", "orange");
+        List<String> nums = Arrays.asList("a", "b", "c");
+
+        // 释放字符串列表的Observable
+        Observable<List<String>> observable = Observable.just(fruits, nums);
+
+        // 将List<String>转换成Observable<String>
+        Function<List<String>, Observable<String>> function = new Function<List<String>, Observable<String>>() {
+            @Override
+            public Observable<String> apply(@NonNull List<String> strings) throws Exception {
+                return Observable.zip(
+                        Observable.fromIterable(strings),
+                        Observable.interval(500, TimeUnit.MILLISECONDS),
+                        (s, aLong) -> s
+                );
+            }
+        };
+
+        Observable<String> stringObservable = observable.flatMap(function);
+
+        stringObservable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                System.out.println("s = " + s);
+            }
+        });
+    }
+
+    /**
+     * 完成
+     */
+    private void testConcatMap() {
+        // 字符串列表
+        List<String> fruits = Arrays.asList("apple", "banana", "orange");
+        List<String> nums = Arrays.asList("a", "b", "c");
+
+        // 释放字符串列表的Observable
+        Observable<List<String>> observable = Observable.just(fruits, nums);
+
+        // 将List<String>转换成Observable<String>
+        Function<List<String>, Observable<String>> function = new Function<List<String>, Observable<String>>() {
+            @Override
+            public Observable<String> apply(@NonNull List<String> strings) throws Exception {
+                return Observable.zip(
+                        Observable.fromIterable(strings),
+                        Observable.interval(500, TimeUnit.MILLISECONDS),
+                        (s, aLong) -> s
+                );
+            }
+        };
+
+        Observable<String> stringObservable = observable.concatMap(function);
+
+        stringObservable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                System.out.println("s = " + s);
+            }
+        });
     }
 
     private void testGroupBy() {
