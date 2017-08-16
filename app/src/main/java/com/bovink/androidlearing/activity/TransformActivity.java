@@ -18,6 +18,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observables.GroupedObservable;
 
 /**
  * com.bovink.androidlearing.activity
@@ -39,7 +40,7 @@ public class TransformActivity extends AppCompatActivity {
     @OnClick(R.id.btn_transform)
     void clickTransform() {
 
-        testMap();
+        testGroupBy();
     }
 
     private void testBuffer() {
@@ -120,23 +121,43 @@ public class TransformActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 完成
+     */
     private void testGroupBy() {
-        Observable.just("one", "two, three", "four", "five, six")
-                .groupBy(s -> {
-                    if (s.contains(",")) {
-                        return 1;
-                    }
-                    return 2;
-                })
-                .subscribe(observable -> {
-                    if (observable.getKey() == 1) {
+        Observable<String> observable = Observable.just("world", "right", "ok", "comfortable", "no");
 
-                        observable.subscribe(s -> {
+        // 根据String设置key的值
+        Function<String, Integer> function = new Function<String, Integer>() {
+            @Override
+            public Integer apply(@NonNull String s) throws Exception {
+                Integer result;
+                if (s.length() > 3) {
+                    result = 1;
+                } else {
+                    result = 2;
+                }
+                return result;
+            }
+        };
+
+        // Integer为key，String为value
+        Observable<GroupedObservable<Integer, String>> observableObservable = observable.groupBy(function);
+
+        observableObservable.subscribe(new Consumer<GroupedObservable<Integer, String>>() {
+            @Override
+            public void accept(@NonNull GroupedObservable<Integer, String> integerStringGroupedObservable) throws Exception {
+                if (integerStringGroupedObservable.getKey() == 1) {
+                    // key为1的GroupedObservable执行subcribe
+                    integerStringGroupedObservable.subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(@NonNull String s) throws Exception {
                             System.out.println("s = " + s);
-                        });
-                    }
-
-                });
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**
