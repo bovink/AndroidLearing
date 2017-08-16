@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
@@ -40,7 +41,7 @@ public class TransformActivity extends AppCompatActivity {
     @OnClick(R.id.btn_transform)
     void clickTransform() {
 
-        testBuffer();
+        testScan();
     }
 
     /**
@@ -190,13 +191,28 @@ public class TransformActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 完成
+     */
     private void testScan() {
-        Observable.just("one", "two", "three", "four")
-                .scan((s1, s2) -> s1 + " and " + s2)
+        Observable<Integer> integerObservable = Observable.just(1, 3, 5, 7, 9);
 
-                .subscribe(integer -> System.out.println("integer = " + integer));
+        BiFunction<Integer, Integer, Integer> function = new BiFunction<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(@NonNull Integer integer, @NonNull Integer integer2) throws Exception {
+                Integer result = integer * integer2;
+                return result;
+            }
+        };
 
+        Observable<Integer> observable = integerObservable.scan(function);
 
+        observable.subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                System.out.println("integer = " + integer);
+            }
+        });
     }
 
     private void testWindow1() {
