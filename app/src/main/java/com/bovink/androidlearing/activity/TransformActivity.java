@@ -40,18 +40,23 @@ public class TransformActivity extends AppCompatActivity {
     @OnClick(R.id.btn_transform)
     void clickTransform() {
 
-        testGroupBy();
+        testBuffer();
     }
 
+    /**
+     * 完成
+     */
     private void testBuffer() {
-        Observable<List<String>> observable = Observable
-                .just("one", "two", "three", "four")
-                .buffer(2);
+        Observable<String> stringObservable = Observable.just("one", "two", "three", "four", "five");
 
-        observable.subscribe(strings -> {
-            System.out.println("strings.size() = " + strings.size());
+        Observable<List<String>> listObservable = stringObservable.buffer(2);
+
+        listObservable.subscribe(new Consumer<List<String>>() {
+            @Override
+            public void accept(@NonNull List<String> strings) throws Exception {
+                System.out.println("strings.size() = " + strings.size());
+            }
         });
-
     }
 
 
@@ -64,7 +69,7 @@ public class TransformActivity extends AppCompatActivity {
         List<String> nums = Arrays.asList("a", "b", "c");
 
         // 释放字符串列表的Observable
-        Observable<List<String>> observable = Observable.just(fruits, nums);
+        Observable<List<String>> listObservable = Observable.just(fruits, nums);
 
         // 将List<String>转换成Observable<String>
         Function<List<String>, Observable<String>> function = new Function<List<String>, Observable<String>>() {
@@ -78,7 +83,7 @@ public class TransformActivity extends AppCompatActivity {
             }
         };
 
-        Observable<String> stringObservable = observable.flatMap(function);
+        Observable<String> stringObservable = listObservable.flatMap(function);
 
         stringObservable.subscribe(new Consumer<String>() {
             @Override
@@ -97,7 +102,7 @@ public class TransformActivity extends AppCompatActivity {
         List<String> nums = Arrays.asList("a", "b", "c");
 
         // 释放字符串列表的Observable
-        Observable<List<String>> observable = Observable.just(fruits, nums);
+        Observable<List<String>> listObservable = Observable.just(fruits, nums);
 
         // 将List<String>转换成Observable<String>
         Function<List<String>, Observable<String>> function = new Function<List<String>, Observable<String>>() {
@@ -111,7 +116,7 @@ public class TransformActivity extends AppCompatActivity {
             }
         };
 
-        Observable<String> stringObservable = observable.concatMap(function);
+        Observable<String> stringObservable = listObservable.concatMap(function);
 
         stringObservable.subscribe(new Consumer<String>() {
             @Override
@@ -125,7 +130,7 @@ public class TransformActivity extends AppCompatActivity {
      * 完成
      */
     private void testGroupBy() {
-        Observable<String> observable = Observable.just("world", "right", "ok", "comfortable", "no");
+        Observable<String> stringObservable = Observable.just("world", "right", "ok", "comfortable", "no");
 
         // 根据String设置key的值
         Function<String, Integer> function = new Function<String, Integer>() {
@@ -142,9 +147,9 @@ public class TransformActivity extends AppCompatActivity {
         };
 
         // Integer为key，String为value
-        Observable<GroupedObservable<Integer, String>> observableObservable = observable.groupBy(function);
+        Observable<GroupedObservable<Integer, String>> groupedObservableObservable = stringObservable.groupBy(function);
 
-        observableObservable.subscribe(new Consumer<GroupedObservable<Integer, String>>() {
+        groupedObservableObservable.subscribe(new Consumer<GroupedObservable<Integer, String>>() {
             @Override
             public void accept(@NonNull GroupedObservable<Integer, String> integerStringGroupedObservable) throws Exception {
                 if (integerStringGroupedObservable.getKey() == 1) {
@@ -164,7 +169,7 @@ public class TransformActivity extends AppCompatActivity {
      * 完成
      */
     private void testMap() {
-        Observable<Integer> observable = Observable.just(1, 2, 3, 4);
+        Observable<Integer> integerObservable = Observable.just(1, 2, 3, 4);
 
         // 将Integer转换成String
         Function<Integer, String> function = new Function<Integer, String>() {
@@ -175,7 +180,7 @@ public class TransformActivity extends AppCompatActivity {
             }
         };
 
-        Observable<String> stringObservable = observable.map(function);
+        Observable<String> stringObservable = integerObservable.map(function);
 
         stringObservable.subscribe(new Consumer<String>() {
             @Override
