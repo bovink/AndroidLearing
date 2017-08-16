@@ -215,10 +215,13 @@ public class TransformActivity extends AppCompatActivity {
         });
     }
 
-    private void testWindow1() {
-        Observable<String> observable = Observable.just("1", "2", "3", "4", "5", "6");
+    /**
+     * 完成
+     */
+    private void testWindow() {
+        Observable<String> stringObservable = Observable.just("1", "2", "3", "4", "5", "6");
 
-        Observable<Observable<String>> observableObservable = observable.window(2);
+        Observable<Observable<String>> observableObservable = stringObservable.window(2);
 
         observableObservable.subscribe(new Consumer<Observable<String>>() {
             @Override
@@ -226,7 +229,6 @@ public class TransformActivity extends AppCompatActivity {
                 System.out.println("get");
             }
         });
-
     }
 
     private void testWindow2() {
