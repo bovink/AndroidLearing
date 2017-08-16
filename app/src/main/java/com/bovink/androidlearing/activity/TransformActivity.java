@@ -39,9 +39,7 @@ public class TransformActivity extends AppCompatActivity {
     @OnClick(R.id.btn_transform)
     void clickTransform() {
 
-//        testScan();
-//        testWindow7();
-        testFlatMap();
+        testMap();
     }
 
     private void testBuffer() {
@@ -141,12 +139,29 @@ public class TransformActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * 完成
+     */
     private void testMap() {
-        Observable.just(1, 2, 3, 4)
-                .map(integer -> integer * 10)
-                .subscribe(i -> {
-                    System.out.println("i = " + i);
-                });
+        Observable<Integer> observable = Observable.just(1, 2, 3, 4);
+
+        // 将Integer转换成String
+        Function<Integer, String> function = new Function<Integer, String>() {
+            @Override
+            public String apply(@NonNull Integer integer) throws Exception {
+                Integer result = integer * 100;
+                return result.toString();
+            }
+        };
+
+        Observable<String> stringObservable = observable.map(function);
+
+        stringObservable.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                System.out.println("s = " + s);
+            }
+        });
     }
 
     private void testScan() {
