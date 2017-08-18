@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Camera.Parameters parameters = camera.getParameters();
+        // 影响takePiction输出的图片的角度
+        parameters.setRotation(90);
         parameters.setPreviewSize(1920, 1080);
         parameters.setPictureSize(1920, 1080);
 
@@ -101,12 +103,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("MainActivity.capture");
 
         takePicture();
-//        camera.cancelAutoFocus();
-//        camera.autoFocus(new Camera.AutoFocusCallback() {
-//            @Override
-//            public void onAutoFocus(boolean success, Camera camera) {
-//            }
-//        });
     }
 
     private void takePicture() {
