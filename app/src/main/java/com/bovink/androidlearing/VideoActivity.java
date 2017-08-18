@@ -3,13 +3,16 @@ package com.bovink.androidlearing;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.TextureView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,6 +32,7 @@ public class VideoActivity extends AppCompatActivity {
     TextureView textureView;
 
     private Camera camera;
+    private MediaRecorder recorder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +40,9 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 1);
         } else {
             new Thread() {
                 @Override
@@ -72,6 +77,14 @@ public class VideoActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_record)
     void record() {
+        startRecord();
+    }
+
+    @OnClick(R.id.btn_stop)
+    void stopRecord() {
+        releaseRecorder();
+        releaseCamera();
+        initCamera();
     }
 
     private void initCamera() {
@@ -105,6 +118,42 @@ public class VideoActivity extends AppCompatActivity {
         camera.setParameters(parameters);
         camera.startPreview();
 
+    }
+
+    private void startRecord() {
+        recorder = new MediaRecorder();
+
+        camera.unlock();
+        recorder.setCamera(camera);
+        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+
+        File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4");
+        recorder.setOutputFile(file.getPath());
+        recorder.setVideoSize(1920, 1080);
+        recorder.setVideoFrameRate(60);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        recorder.start();
+
+    }
+
+    private void releaseRecorder() {
+
+        recorder.stop();
+
+        recorder.reset();
+        recorder.release();
+        recorder = null;
+        camera.lock();
     }
 
     private void releaseCamera() {
