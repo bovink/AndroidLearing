@@ -49,6 +49,10 @@ public class PictureActivity extends AppCompatActivity {
     @OnClick(R.id.btn_record)
     void record() {
 
+        if (camera != null) {
+            camera.release();
+            camera = null;
+        }
 
         openCamera();
     }
@@ -140,7 +144,7 @@ public class PictureActivity extends AppCompatActivity {
                 }.start();
             }
         });
-        camera.startPreview();
+//        camera.startPreview();
     }
 
 
