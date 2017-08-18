@@ -134,6 +134,8 @@ public class VideoActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4");
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
+        // 解决花屏问题
+        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);
         recorder.setVideoFrameRate(60);
 
         try {
