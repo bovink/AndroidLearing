@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,15 +24,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * 照相
+ *
  * @author Retina975
  * @since 2017/08/18
  */
 
+@SuppressWarnings("deprecation")
 public class PictureActivity extends AppCompatActivity {
     @BindView(R.id.view_texture)
     TextureView textureView;
 
-    Camera camera;
+    private Camera camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +47,46 @@ public class PictureActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        } else {
+
+            new Thread(){
+                @Override
+                public void run() {
+                    initCamera();
+                }
+            }.start();
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean permissionAccepted = false;
+        if (requestCode == 1) {
+            permissionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        }
+        if (permissionAccepted) {
+            initCamera();
+        } else {
+            finish();
+        }
+    }
 
     @OnClick(R.id.btn_record)
     void record() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         if (camera != null) {
             camera.release();
             camera = null;
         }
-
-        openCamera();
     }
 
-    private void openCamera() {
+    private void initCamera() {
 
         camera = Camera.open();
 
@@ -72,7 +101,9 @@ public class PictureActivity extends AppCompatActivity {
         Camera.Parameters parameters = camera.getParameters();
         // 影响takePiction输出的图片的角度
         parameters.setRotation(90);
-        parameters.setPreviewSize(1920, 1080);
+        System.out.println("textureView.getWidth() = " + textureView.getWidth());
+        System.out.println("textureView.getHeight() = " + textureView.getHeight());
+        parameters.setPreviewSize(textureView.getHeight(), textureView.getWidth());
         parameters.setPictureSize(1920, 1080);
 
 
@@ -87,21 +118,19 @@ public class PictureActivity extends AppCompatActivity {
             parameters.setFocusMode(focusList.get(0));
         }
 
-//        String originAspectRatio = getAspectRatio(textureView.getHeight(), textureView.getWidth());
-//        System.out.println("originAspectRatio = " + originAspectRatio);
-//        System.out.println("textureView.getWidth() = " + textureView.getWidth());
-//        System.out.println("textureView.getHeight() = " + textureView.getHeight());
-//
-//        List<Camera.Size> previewSizes = new ArrayList<>();
-//        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//        for (Camera.Size size : sizes) {
-//            String previewAspectRatio = getAspectRatio(size.width, size.height);
-//            if (previewAspectRatio.equals(originAspectRatio)) {
-//                System.out.println("previewAspectRatio = " + previewAspectRatio);
-//                System.out.println("size.width = " + size.width);
-//                System.out.println("size.height = " + size.height);
-//            }
-//        }
+        String originAspectRatio = getAspectRatio(textureView.getHeight(), textureView.getWidth());
+        System.out.println("originAspectRatio = " + originAspectRatio);
+
+        List<Camera.Size> previewSizes = new ArrayList<>();
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+        for (Camera.Size size : sizes) {
+            String previewAspectRatio = getAspectRatio(size.width, size.height);
+            if (previewAspectRatio.equals(originAspectRatio)) {
+                System.out.println("previewAspectRatio = " + previewAspectRatio);
+                System.out.println("size.width = " + size.width);
+                System.out.println("size.height = " + size.height);
+            }
+        }
 
         camera.setParameters(parameters);
         camera.startPreview();
@@ -144,7 +173,6 @@ public class PictureActivity extends AppCompatActivity {
                 }.start();
             }
         });
-//        camera.startPreview();
     }
 
 
