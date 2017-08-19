@@ -19,7 +19,7 @@
             android:id="@+id/btn_capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="bottom"
             android:text="capture" />
 
         <Button
@@ -28,5 +28,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:text="record" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_preview_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left" />
     </FrameLayout>
 </RelativeLayout>
