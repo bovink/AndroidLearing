@@ -6,11 +6,13 @@ import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.TextureView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class VideoActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         } else {
             new Thread() {
                 @Override
@@ -145,7 +147,17 @@ public class VideoActivity extends AppCompatActivity {
         }
 
         recorder.start();
+        tenSecondRecord();
+    }
 
+    private void tenSecondRecord() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recorder.stop();
+                Toast.makeText(VideoActivity.this, "end", Toast.LENGTH_SHORT).show();
+            }
+        }, 11000);
     }
 
     private void releaseRecorder() {
