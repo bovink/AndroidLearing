@@ -1,6 +1,7 @@
 package com.bovink.androidlearing;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
@@ -35,12 +36,14 @@ public class VideoActivity extends AppCompatActivity {
 
     private Camera camera;
     private MediaRecorder recorder;
+    private Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
+        context = this;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -104,7 +107,11 @@ public class VideoActivity extends AppCompatActivity {
 
         parameters.setRotation(90);
         parameters.setPreviewSize(1920, 1080);
-        parameters.setPictureSize(1920, 1080);
+//        parameters.setPictureSize(1920, 1080);
+        int[] fps = new int[2];
+        parameters.getPreviewFpsRange(fps);
+        System.out.println("fps = " + fps[Camera.Parameters.PREVIEW_FPS_MAX_INDEX]);
+        System.out.println("fps = " + fps[Camera.Parameters.PREVIEW_FPS_MIN_INDEX]);
 
         List<String> focusList = parameters.getSupportedFocusModes();
         if (focusList.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
@@ -127,18 +134,33 @@ public class VideoActivity extends AppCompatActivity {
 
         camera.unlock();
         recorder.setCamera(camera);
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 
         File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4");
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
         // 解决花屏问题
-        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);
-        recorder.setVideoFrameRate(60);
+        recorder.setVideoEncodingBitRate(2 * 1024 * 1024);
+        recorder.setVideoFrameRate(30);
+//        recorder.setAudioSamplingRate(16000);
+//        recorder.setCaptureRate(7000);
+        recorder.setMaxDuration(10000);
+        recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mr, int what, int extra) {
+                if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                    recorder.stop();
+                    recorder.reset();
+                    camera.startPreview();
+                    Toast.makeText(context, "end", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         try {
             recorder.prepare();
