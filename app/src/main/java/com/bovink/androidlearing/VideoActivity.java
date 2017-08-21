@@ -1,6 +1,7 @@
 package com.bovink.androidlearing;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.TextureView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,12 +35,14 @@ public class VideoActivity extends AppCompatActivity {
 
     private Camera camera;
     private MediaRecorder recorder;
+    private Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
+        context = this;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -135,8 +139,21 @@ public class VideoActivity extends AppCompatActivity {
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
         // 解决花屏问题
-        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);
+        recorder.setVideoEncodingBitRate(2 * 1024 * 1024);
         recorder.setVideoFrameRate(30);
+        recorder.setMaxDuration(10000);
+        recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mr, int what, int extra) {
+                if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                    recorder.stop();
+                    recorder.reset();
+                    camera.startPreview();
+                    Toast.makeText(context, "end", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         try {
             recorder.prepare();
