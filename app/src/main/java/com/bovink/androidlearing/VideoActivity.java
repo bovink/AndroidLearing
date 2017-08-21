@@ -135,7 +135,7 @@ public class VideoActivity extends AppCompatActivity {
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
         // 解决花屏问题
-        recorder.setVideoEncodingBitRate(3 * 1024 * 1024);
+        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);
         recorder.setVideoFrameRate(30);
 
         try {
