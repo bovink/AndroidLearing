@@ -42,7 +42,7 @@ public class VideoActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         } else {
             new Thread() {
                 @Override
@@ -126,17 +126,17 @@ public class VideoActivity extends AppCompatActivity {
         camera.unlock();
         recorder.setCamera(camera);
         recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        recorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 
         File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4");
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
         // 解决花屏问题
-        recorder.setVideoEncodingBitRate(5 * 1024 * 1024);
-        recorder.setVideoFrameRate(60);
+        recorder.setVideoEncodingBitRate(3 * 1024 * 1024);
+        recorder.setVideoFrameRate(30);
 
         try {
             recorder.prepare();
