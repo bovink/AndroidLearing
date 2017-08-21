@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         input = Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4";
         output = Environment.getExternalStorageDirectory() + "/Pictures/" + "video_compress.mp4";
-        String cmd = "-i " + input + " -vcodec h264 -b:v 1000k -acodec mp2 " + output;
+        String cmd = "-i " + input + " -vcodec libx264 -crf 20 " + output;
         executeFFMpegBinary(cmd.split(" "));
     }
 
