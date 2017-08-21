@@ -106,7 +106,11 @@ public class VideoActivity extends AppCompatActivity {
 
         parameters.setRotation(90);
         parameters.setPreviewSize(1920, 1080);
-        parameters.setPictureSize(1920, 1080);
+//        parameters.setPictureSize(1920, 1080);
+        int[] fps = new int[2];
+        parameters.getPreviewFpsRange(fps);
+        System.out.println("fps = " + fps[Camera.Parameters.PREVIEW_FPS_MAX_INDEX]);
+        System.out.println("fps = " + fps[Camera.Parameters.PREVIEW_FPS_MIN_INDEX]);
 
         List<String> focusList = parameters.getSupportedFocusModes();
         if (focusList.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
@@ -129,8 +133,8 @@ public class VideoActivity extends AppCompatActivity {
 
         camera.unlock();
         recorder.setCamera(camera);
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        recorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
@@ -141,6 +145,8 @@ public class VideoActivity extends AppCompatActivity {
         // 解决花屏问题
         recorder.setVideoEncodingBitRate(2 * 1024 * 1024);
         recorder.setVideoFrameRate(30);
+//        recorder.setAudioSamplingRate(16000);
+//        recorder.setCaptureRate(7000);
         recorder.setMaxDuration(10000);
         recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
             @Override
