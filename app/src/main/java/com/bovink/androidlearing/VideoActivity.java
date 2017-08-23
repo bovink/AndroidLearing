@@ -134,20 +134,18 @@ public class VideoActivity extends AppCompatActivity {
 
         camera.unlock();
         recorder.setCamera(camera);
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
         recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 
         File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/" + "video.mp4");
         recorder.setOutputFile(file.getPath());
         recorder.setVideoSize(1920, 1080);
         // 解决花屏问题
-        recorder.setVideoEncodingBitRate(2 * 1024 * 1024);
-        recorder.setVideoFrameRate(30);
-//        recorder.setAudioSamplingRate(16000);
-//        recorder.setCaptureRate(7000);
+        recorder.setVideoEncodingBitRate(2000000);
+        recorder.setVideoFrameRate(24);
         recorder.setMaxDuration(10000);
         recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
             @Override
@@ -169,7 +167,7 @@ public class VideoActivity extends AppCompatActivity {
         }
 
         recorder.start();
-        tenSecondRecord();
+//        tenSecondRecord();
     }
 
     private void tenSecondRecord() {
