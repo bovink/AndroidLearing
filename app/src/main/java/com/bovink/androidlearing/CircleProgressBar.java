@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -25,12 +27,41 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CircleProgressBar extends AppCompatImageView {
 
+    /**
+     * View的宽度
+     */
     int width;
+    /**
+     * View的高度
+     */
     int height;
-
+    /**
+     * 环的画笔
+     */
     Paint paint;
-    Paint circlePaint;
+    /**
+     * 外园的画笔
+     */
+    Paint outCirclePaint;
+    /**
+     * 内圆的画笔
+     */
+    Paint innerCirclePaint;
+    /**
+     *
+     */
+    float outRadius = 130;
+    /**
+     *
+     */
+    float innerRadius = 100;
+    /**
+     *
+     */
     RectF rectF;
+    /**
+     * 角度
+     */
     float angel = 0;
 
     public CircleProgressBar(Context context) {
@@ -56,30 +87,58 @@ public class CircleProgressBar extends AppCompatImageView {
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
 
-        circlePaint = new Paint();
-        circlePaint.setAntiAlias(true);
-        circlePaint.setColor(Color.parseColor("#e9e9e9"));
-        circlePaint.setStyle(Paint.Style.FILL);
+        outCirclePaint = new Paint();
+        outCirclePaint.setAntiAlias(true);
+        outCirclePaint.setColor(Color.parseColor("#e9e9e9"));
+        outCirclePaint.setStyle(Paint.Style.FILL);
+
+        innerCirclePaint = new Paint();
+        innerCirclePaint.setAntiAlias(true);
+        innerCirclePaint.setColor(Color.parseColor("#ffffff"));
+        innerCirclePaint.setStyle(Paint.Style.FILL);
 
         rectF = new RectF();
 
-        setOnClickListener(new OnClickListener() {
+        setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Observable.intervalRange(0, 100000, 0, 10, TimeUnit.MILLISECONDS)
+            public boolean onTouch(View v, MotionEvent event) {
+                Observable.intervalRange(0, 10, 0, 10, TimeUnit.MILLISECONDS)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<Long>() {
                             @Override
                             public void accept(@NonNull Long aLong) throws Exception {
-//                                setRadius((int) (aLong * 100 / 100));
-
-                                setProgress((int) (aLong / 10));
+                                outRadius += 3.5;
+                                innerRadius -= 3.5;
+                                invalidate();
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                throwable.printStackTrace();
+                            }
+                        }, new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
+                                adjustCircleProgress();
                             }
                         });
-
+                return false;
             }
         });
+    }
+
+    private void adjustCircleProgress() {
+        Observable.intervalRange(0, 100, 0, 10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(@NonNull Long aLong) throws Exception {
+                        setProgress((int) (aLong * 100 / 100));
+                    }
+                });
     }
 
     @Override
@@ -88,9 +147,6 @@ public class CircleProgressBar extends AppCompatImageView {
         width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 
-        rectF.set(5, 5, width - 5, height - 5);
-        System.out.println("width = " + width);
-        System.out.println("height = " + height);
     }
 
     @Override
@@ -98,18 +154,18 @@ public class CircleProgressBar extends AppCompatImageView {
         super.onDraw(canvas);
 
 
-//        canvas.drawCircle(width / 2, height / 2, radius + 30, paint);
-        canvas.drawCircle(width / 2, height / 2, radius, circlePaint);
+        canvas.drawCircle(width / 2, height / 2, outRadius, outCirclePaint);
+        canvas.drawCircle(width / 2, height / 2, innerRadius, innerCirclePaint);
         canvas.drawArc(rectF, 270, angel, false, paint);
 
     }
 
-    float radius = 80;
 
-    public void setRadius(int radius) {
-        this.radius = (float) (radius) * 100 / 100 * (width / 2 - 10) / 100;
-        invalidate();
-    }
+//    public void setRadius(int radius) {
+//        System.out.println("radius = " + radius);
+//        this.radius = 50 + 300 * radius / 100;
+//        invalidate();
+//    }
 
     public void setProgress(int progress) {
         angel = (float) (progress) * 100 / 100 * 360 / 100;
