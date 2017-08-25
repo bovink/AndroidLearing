@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 System.out.println("progress = " + progress);
-                circleProgressBar.setProgress(progress);
+//                circleProgressBar.setProgress(progress);
+                circleProgressBar.setRadius(progress);
             }
 
             @Override
