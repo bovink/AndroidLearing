@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -63,6 +64,7 @@ public class CircleProgressBar extends AppCompatImageView {
      * 角度
      */
     float angel = 0;
+    private CompositeDisposable disposable;
 
     public CircleProgressBar(Context context) {
         super(context);
@@ -80,6 +82,7 @@ public class CircleProgressBar extends AppCompatImageView {
     }
 
     private void init() {
+        disposable = new CompositeDisposable();
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -99,10 +102,23 @@ public class CircleProgressBar extends AppCompatImageView {
 
         rectF = new RectF();
 
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startProgress();
+                return true;
+            }
+        });
+
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                startProgress();
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        disposable.clear();
+                        break;
+                }
                 return false;
             }
         });
@@ -110,7 +126,7 @@ public class CircleProgressBar extends AppCompatImageView {
 
     private void startProgress() {
 
-        Observable.intervalRange(0, 10, 0, 10, TimeUnit.MILLISECONDS)
+        disposable.add(Observable.intervalRange(0, 10, 0, 10, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
@@ -131,11 +147,11 @@ public class CircleProgressBar extends AppCompatImageView {
                         rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
                         adjustCircleProgress();
                     }
-                });
+                }));
     }
 
     private void adjustCircleProgress() {
-        Observable.intervalRange(1, 1000, 0, 10, TimeUnit.MILLISECONDS)
+        disposable.add(Observable.intervalRange(1, 1000, 0, 10, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
@@ -144,7 +160,7 @@ public class CircleProgressBar extends AppCompatImageView {
                         float percent = (float) aLong / 1000;
                         setProgress(percent);
                     }
-                });
+                }));
     }
 
     @Override
