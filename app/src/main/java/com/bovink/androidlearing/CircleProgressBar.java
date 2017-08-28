@@ -56,6 +56,10 @@ public class CircleProgressBar extends AppCompatImageView {
      * 角度
      */
     float angel = 0;
+    /**
+     * 开始进度
+     */
+    private boolean startProgress;
 
     public CircleProgressBar(Context context) {
         super(context);
@@ -95,6 +99,7 @@ public class CircleProgressBar extends AppCompatImageView {
         setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                startProgress = true;
                 startProgress();
                 return true;
             }
@@ -106,8 +111,7 @@ public class CircleProgressBar extends AppCompatImageView {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
-                        circleHandler.removeMessages(1001);
-                        progressHandler.removeMessages(1001);
+                        startProgress = false;
                         break;
                 }
                 return false;
@@ -148,7 +152,7 @@ public class CircleProgressBar extends AppCompatImageView {
 
     }
 
-    public void setProgress(float progress) {
+    private void setProgress(float progress) {
         angel = progress * 360;
         invalidate();
 
@@ -171,14 +175,40 @@ public class CircleProgressBar extends AppCompatImageView {
                     nextMsg.arg1 = msg.arg1 + 1;
                     sendMessageDelayed(nextMsg, 10);
                 } else {
-                    // 开始进度
-                    nextMsg = obtainMessage();
-                    nextMsg.what = 1002;
-                    sendMessage(nextMsg);
+                    if (startProgress) {
+
+                        rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
+                        adjustCircleProgress();
+                    } else {
+
+                        nextMsg = obtainMessage();
+                        nextMsg.what = 1001;
+                        nextMsg.arg1 = 1;
+                        reserveHandler.sendMessage(nextMsg);
+                    }
                 }
-            } else if (msg.what == 1002) {
-                rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
-                adjustCircleProgress();
+            }
+        }
+    };
+
+    private Handler reserveHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1001) {
+                // 开始绘制
+                outRadius -= 3.5;
+                innerRadius += 3.5;
+                invalidate();
+
+                Message nextMsg;
+                // 执行到10为止
+                if (msg.arg1 != 10) {
+
+                    nextMsg = obtainMessage();
+                    nextMsg.what = msg.what;
+                    nextMsg.arg1 = msg.arg1 + 1;
+                    sendMessageDelayed(nextMsg, 10);
+                }
             }
         }
     };
@@ -191,12 +221,20 @@ public class CircleProgressBar extends AppCompatImageView {
                 float percent = (float) msg.arg1 / 1000;
                 setProgress(percent);
 
+                Message nextMsg;
                 // 执行1000次
-                if (msg.arg1 != 1000) {
-                    Message nextMsg = obtainMessage();
+                if (startProgress && msg.arg1 != 1000) {
+                    nextMsg = obtainMessage();
                     nextMsg.what = msg.what;
                     nextMsg.arg1 = msg.arg1 + 1;
                     sendMessageDelayed(nextMsg, 10);
+                } else {
+                    angel = 0;
+
+                    nextMsg = obtainMessage();
+                    nextMsg.what = 1001;
+                    nextMsg.arg1 = 1;
+                    reserveHandler.sendMessage(nextMsg);
                 }
             }
         }
