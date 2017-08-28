@@ -102,41 +102,47 @@ public class CircleProgressBar extends AppCompatImageView {
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Observable.intervalRange(0, 10, 0, 10, TimeUnit.MILLISECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<Long>() {
-                            @Override
-                            public void accept(@NonNull Long aLong) throws Exception {
-                                outRadius += 3.5;
-                                innerRadius -= 3.5;
-                                invalidate();
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                throwable.printStackTrace();
-                            }
-                        }, new Action() {
-                            @Override
-                            public void run() throws Exception {
-                                rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
-                                adjustCircleProgress();
-                            }
-                        });
+                startProgress();
                 return false;
             }
         });
     }
 
-    private void adjustCircleProgress() {
-        Observable.intervalRange(0, 100, 0, 10, TimeUnit.MILLISECONDS)
+    private void startProgress() {
+
+        Observable.intervalRange(0, 10, 0, 10, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(@NonNull Long aLong) throws Exception {
-                        setProgress((int) (aLong * 100 / 100));
+                        outRadius += 3.5;
+                        innerRadius -= 3.5;
+                        invalidate();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        rectF.set(width / 2 - outRadius - 5, width / 2 - outRadius - 5, width / 2 + outRadius + 5, width / 2 + outRadius + 5);
+                        adjustCircleProgress();
+                    }
+                });
+    }
+
+    private void adjustCircleProgress() {
+        Observable.intervalRange(1, 1000, 0, 10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(@NonNull Long aLong) throws Exception {
+                        float percent = (float) aLong / 1000;
+                        setProgress(percent);
                     }
                 });
     }
@@ -160,16 +166,8 @@ public class CircleProgressBar extends AppCompatImageView {
 
     }
 
-
-//    public void setRadius(int radius) {
-//        System.out.println("radius = " + radius);
-//        this.radius = 50 + 300 * radius / 100;
-//        invalidate();
-//    }
-
-    public void setProgress(int progress) {
-        angel = (float) (progress) * 100 / 100 * 360 / 100;
-        System.out.println("angel = " + angel);
+    public void setProgress(float progress) {
+        angel = progress * 360;
         invalidate();
 
     }
