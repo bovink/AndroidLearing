@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
             mediaPlayer.setDataSource(file.getAbsolutePath());
             mediaPlayer.setSurface(surface);
             mediaPlayer.prepare();
+            mediaPlayer.setLooping(true);
             mediaPlayer.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +63,15 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
 
 
+        System.out.println("width = " + width);
+        System.out.println("height = " + height);
         textureView.setRotation(90);
+        float scaleX = (float) 1920 / 1080;
+        float scaleY = (float) 1080 / 1920;
+        System.out.println("scaleX = " + scaleX);
+        System.out.println("scaleY = " + scaleY);
+        textureView.setScaleX(scaleX);
+        textureView.setScaleY(scaleY);
         initPlayer(new Surface(surface));
     }
 
