@@ -12,6 +12,12 @@ import android.support.v4.app.Fragment;
 public class FruitListFragment extends Fragment implements FruitListContract.View {
     private FruitListContract.Presenter presenter;
 
+    public static FruitListFragment newInstance() {
+        FruitListFragment fragment = new FruitListFragment();
+        return fragment;
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
