@@ -1,6 +1,15 @@
 package com.bovink.androidlearing.fruitlist;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.bovink.androidlearing.R;
+
+import butterknife.ButterKnife;
 
 /**
  * com.bovink.androidlearing.fruitlist
@@ -17,6 +26,13 @@ public class FruitListFragment extends Fragment implements FruitListContract.Vie
         return fragment;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_fruit_list, container, false);
+        ButterKnife.bind(this, root);
+        return root;
+    }
 
     @Override
     public void onResume() {
