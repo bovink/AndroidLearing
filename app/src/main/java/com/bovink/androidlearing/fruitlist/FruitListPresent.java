@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * com.bovink.androidlearing.fruitlist
@@ -17,6 +18,7 @@ import javax.inject.Inject;
  * @since 2017/9/18
  */
 
+@Singleton
 public class FruitListPresent implements FruitListContract.Presenter {
     private FruitListContract.View mView;
     private Context mContext;

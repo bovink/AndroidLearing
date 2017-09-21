@@ -1,5 +1,7 @@
 package com.bovink.androidlearing.fruitlist;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,6 +16,7 @@ import dagger.Provides;
 public class FruitListActivityModule {
 
     @Provides
+    @Singleton
     FruitListContract.Presenter providesPresent(FruitListPresent fruitListPresent) {
         return fruitListPresent;
     }

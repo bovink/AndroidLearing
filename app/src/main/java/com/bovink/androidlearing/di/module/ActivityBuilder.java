@@ -3,6 +3,8 @@ package com.bovink.androidlearing.di.module;
 import com.bovink.androidlearing.fruitlist.FruitListActivity;
 import com.bovink.androidlearing.fruitlist.FruitListActivityModule;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -17,5 +19,6 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = FruitListActivityModule.class)
+    @Singleton
     abstract FruitListActivity buildFruitListActivity();
 }
