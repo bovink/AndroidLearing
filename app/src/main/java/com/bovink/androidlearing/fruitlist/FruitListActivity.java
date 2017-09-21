@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import dagger.android.AndroidInjection;
+
 /**
  * com.bovink.androidlearing.fruitlist
  *
@@ -17,6 +19,7 @@ public class FruitListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fruit);
 
