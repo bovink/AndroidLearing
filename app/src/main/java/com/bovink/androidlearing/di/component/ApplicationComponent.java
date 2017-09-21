@@ -8,7 +8,7 @@ import com.bovink.androidlearing.di.module.ApplicationModule;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * @author fox
@@ -16,7 +16,7 @@ import dagger.android.AndroidInjectionModule;
  */
 
 @Component(modules = {
-        AndroidInjectionModule.class,
+        AndroidSupportInjectionModule.class,
         ApplicationModule.class,
         ActivityBuilder.class
 })
