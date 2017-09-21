@@ -1,6 +1,7 @@
 package com.bovink.androidlearing.fruitlist;
 
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * com.bovink.androidlearing.di.module
@@ -11,4 +12,9 @@ import dagger.Module;
 
 @Module
 public class FruitListActivityModule {
+
+    @Provides
+    FruitListContract.Presenter providesPresent(FruitListPresent fruitListPresent) {
+        return fruitListPresent;
+    }
 }

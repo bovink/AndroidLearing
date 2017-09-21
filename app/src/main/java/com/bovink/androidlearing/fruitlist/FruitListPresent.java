@@ -1,9 +1,14 @@
 package com.bovink.androidlearing.fruitlist;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.bovink.androidlearing.model.Fruit;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * com.bovink.androidlearing.fruitlist
@@ -13,18 +18,31 @@ import java.util.List;
  */
 
 public class FruitListPresent implements FruitListContract.Presenter {
-    private FruitListContract.View view;
+    private FruitListContract.View mView;
+    private Context mContext;
 
-    public FruitListPresent(FruitListContract.View view) {
-        this.view = view;
+    @Inject
+    public FruitListPresent(Context context) {
 
-        view.setPresenter(this);
+        mContext = context;
     }
 
     @Override
-    public void start() {
+    public void setView(FruitListContract.View view) {
 
+        mView = view;
         loadFruits();
+    }
+
+    @Override
+    public void clearFruits() {
+        List<Fruit> fruitList = new ArrayList<>();
+
+        fruitList.add(new Fruit("苹果", "1元"));
+        fruitList.add(new Fruit("梨子", "1元"));
+
+        mView.showFruits(fruitList);
+        Toast.makeText(mContext, "加载完毕", Toast.LENGTH_LONG).show();
     }
 
 
@@ -40,6 +58,7 @@ public class FruitListPresent implements FruitListContract.Presenter {
         fruitList.add(new Fruit("橙子", "6元"));
         fruitList.add(new Fruit("橘子", "62元"));
 
-        view.showFruits(fruitList);
+        mView.showFruits(fruitList);
+        Toast.makeText(mContext, "加载完毕", Toast.LENGTH_LONG).show();
     }
 }

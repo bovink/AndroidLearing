@@ -15,14 +15,18 @@ import java.util.List;
 
 public interface FruitListContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void showFruits(List<Fruit> fruits);
 
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
 
         void loadFruits();
+
+        void setView(View view);
+
+        void clearFruits();
     }
 }

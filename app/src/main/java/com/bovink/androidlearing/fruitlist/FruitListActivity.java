@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bovink.androidlearing.R;
 
+import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 
 /**
@@ -17,19 +21,29 @@ import dagger.android.AndroidInjection;
 
 public class FruitListActivity extends AppCompatActivity {
 
+    @Inject
+    FruitListFragment fruitListFragment;
+
+    @Inject
+    FruitListPresent fruitListPresent;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fruit);
+        ButterKnife.bind(this);
 
-        FruitListFragment fruitListFragment = FruitListFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_fragment, fruitListFragment)
                 .commit();
 
-        FruitListPresent fruitListPresent = new FruitListPresent(fruitListFragment);
 
 
+    }
+
+    @OnClick(R.id.btn_list)
+    void listNew() {
+        fruitListPresent.clearFruits();
     }
 }

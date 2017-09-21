@@ -7,6 +7,6 @@ package com.bovink.androidlearing;
  * @since 2017/9/18
  */
 
-public interface BasePresenter {
-    void start();
+public interface BasePresenter<T> {
+    void setView(T view);
 }

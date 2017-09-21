@@ -14,6 +14,8 @@ import com.bovink.androidlearing.model.Fruit;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +27,8 @@ import butterknife.ButterKnife;
  */
 
 public class FruitListFragment extends Fragment implements FruitListContract.View {
-    private FruitListContract.Presenter presenter;
+    @Inject
+    FruitListContract.Presenter presenter;
     private FruitRecyclerAdapter fruitRecyclerAdapter;
 
     /**
@@ -34,9 +37,8 @@ public class FruitListFragment extends Fragment implements FruitListContract.Vie
     @BindView(R.id.rv_fruit)
     RecyclerView fruitRecyclerView;
 
-    public static FruitListFragment newInstance() {
-        FruitListFragment fragment = new FruitListFragment();
-        return fragment;
+    @Inject
+    public FruitListFragment() {
     }
 
     @Nullable
@@ -55,12 +57,7 @@ public class FruitListFragment extends Fragment implements FruitListContract.Vie
     @Override
     public void onResume() {
         super.onResume();
-        presenter.start();
-    }
-
-    @Override
-    public void setPresenter(FruitListContract.Presenter presenter) {
-        this.presenter = presenter;
+        presenter.setView(this);
     }
 
     @Override
