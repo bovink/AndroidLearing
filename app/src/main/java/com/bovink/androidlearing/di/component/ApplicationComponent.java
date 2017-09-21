@@ -2,6 +2,7 @@ package com.bovink.androidlearing.di.component;
 
 import android.app.Application;
 
+import com.bovink.androidlearing.MyApplication;
 import com.bovink.androidlearing.di.module.ActivityBuilder;
 import com.bovink.androidlearing.di.module.ApplicationModule;
 
@@ -31,5 +32,5 @@ public interface ApplicationComponent {
         ApplicationComponent build();
     }
 
-    void inject(Application application);
+    void inject(MyApplication application);
 }
