@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
         slideDrawerLayout.openDrawer(menuListView);
     }
 
+    private void select(String s) {
+        slideButton.setText(s);
+        slideDrawerLayout.closeDrawer(menuListView);
+    }
+
     public class MyMenuAdapter extends BaseAdapter {
 
         @Override
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
 
             if (convertView == null) {
@@ -88,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
             viewHolder.textView.setText(strings.get(position));
 
+            viewHolder.chooseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    select(strings.get(position));
+                }
+            });
 
             return convertView;
         }
