@@ -5,13 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * @author Retina975
@@ -60,7 +56,7 @@ public class CircleProgressBar extends AppCompatImageView {
     /**
      * 角度
      */
-    float angel = 0;
+    float angel = 180;
     /**
      * 开始进度
      */
@@ -88,88 +84,28 @@ public class CircleProgressBar extends AppCompatImageView {
 
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.parseColor("#66ccff"));
+        paint.setColor(Color.parseColor("#F9715D"));
         paint.setStrokeWidth(spToPx(context, 4));
         paint.setStyle(Paint.Style.STROKE);
 
         circleBottomPaint = new Paint();
         circleBottomPaint.setAntiAlias(true);
-        circleBottomPaint.setColor(Color.parseColor("#000000"));
+        circleBottomPaint.setColor(Color.parseColor("#CBCBCB"));
         circleBottomPaint.setStrokeWidth(spToPx(context, 1));
         circleBottomPaint.setStyle(Paint.Style.STROKE);
 
         outCirclePaint = new Paint();
         outCirclePaint.setAntiAlias(true);
-        outCirclePaint.setColor(Color.parseColor("#e9e9e9"));
+        outCirclePaint.setColor(Color.parseColor("#FFFFFF"));
         outCirclePaint.setStyle(Paint.Style.FILL);
 
         innerCirclePaint = new Paint();
         innerCirclePaint.setAntiAlias(true);
-        innerCirclePaint.setColor(Color.parseColor("#ffffff"));
+        innerCirclePaint.setColor(Color.parseColor("#E9E9E9"));
         innerCirclePaint.setStyle(Paint.Style.FILL);
 
         rectF = new RectF();
 
-        setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startProgress = true;
-                startProgress();
-                if (onLongClickListener != null) {
-
-                    onLongClickListener.onLongClick();
-                }
-                return true;
-            }
-        });
-
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP:
-                        startProgress = false;
-                        break;
-                }
-                return false;
-            }
-        });
-    }
-
-    private OnVideoRecordedListener onVideoRecordedListener;
-
-    public void setOnVideoRecordedListener(OnVideoRecordedListener onVideoRecordedListener) {
-        this.onVideoRecordedListener = onVideoRecordedListener;
-    }
-
-    public interface OnVideoRecordedListener {
-        void onVideoRecorded();
-    }
-
-
-    private OnLongClickListener onLongClickListener;
-
-    public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
-        this.onLongClickListener = onLongClickListener;
-    }
-
-    public interface OnLongClickListener {
-        void onLongClick();
-    }
-
-    private void startProgress() {
-        Message msg = new Message();
-        msg.what = 1001;
-        msg.arg1 = 1;
-        circleHandler.sendMessage(msg);
-    }
-
-    private void adjustCircleProgress() {
-        Message msg = new Message();
-        msg.what = 1001;
-        msg.arg1 = 1;
-        progressHandler.sendMessage(msg);
     }
 
     @Override
@@ -191,13 +127,12 @@ public class CircleProgressBar extends AppCompatImageView {
         canvas.drawCircle(width / 2, height / 2, innerRadius, innerCirclePaint);
 
 
-        RectF bottomRect = new RectF();
-        bottomRect.set(
-                (width / 2 - outRadius + spToPx(context, 2)),
-                (width / 2 - outRadius + spToPx(context, 2)),
-                (width / 2 + outRadius - spToPx(context, 2)),
-                (width / 2 + outRadius - spToPx(context, 2)));
-        canvas.drawArc(bottomRect, 270, 360, false, circleBottomPaint);
+        rectF.set(
+                (width / 2 - outRadius + spToPx(context, 1)),
+                (width / 2 - outRadius + spToPx(context, 1)),
+                (width / 2 + outRadius - spToPx(context, 1)),
+                (width / 2 + outRadius - spToPx(context, 1)));
+        canvas.drawArc(rectF, 270, 360, false, circleBottomPaint);
         canvas.drawArc(rectF, 270, angel, false, paint);
 
     }
@@ -207,109 +142,6 @@ public class CircleProgressBar extends AppCompatImageView {
         invalidate();
 
     }
-
-    private Handler circleHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 1001) {
-                // 开始绘制
-                outRadius += dpToPx(context, 1);
-                innerRadius -= dpToPx(context, 1.5f);
-                invalidate();
-
-                Message nextMsg;
-                // 执行到10为止
-                if (msg.arg1 != 10) {
-                    nextMsg = obtainMessage();
-                    nextMsg.what = msg.what;
-                    nextMsg.arg1 = msg.arg1 + 1;
-                    sendMessageDelayed(nextMsg, 10);
-                } else {
-                    if (startProgress) {
-
-                        rectF.set(
-                                (width / 2 - outRadius + spToPx(context, 2)),
-                                (width / 2 - outRadius + spToPx(context, 2)),
-                                (width / 2 + outRadius - spToPx(context, 2)),
-                                (width / 2 + outRadius - spToPx(context, 2)));
-
-                        adjustCircleProgress();
-                    } else {
-
-                        nextMsg = obtainMessage();
-                        nextMsg.what = 1001;
-                        nextMsg.arg1 = 1;
-                        reserveHandler.sendMessage(nextMsg);
-                    }
-                }
-            }
-        }
-    };
-
-    private Handler reserveHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 1001) {
-                // 开始绘制
-                outRadius -= dpToPx(context, 1);
-                innerRadius += dpToPx(context, 1.5f);
-                invalidate();
-
-                Message nextMsg;
-                // 执行到10为止
-                if (msg.arg1 != 10) {
-
-                    nextMsg = obtainMessage();
-                    nextMsg.what = msg.what;
-                    nextMsg.arg1 = msg.arg1 + 1;
-                    sendMessageDelayed(nextMsg, 10);
-                } else {
-                    if (onVideoRecordedListener != null) {
-                        onVideoRecordedListener.onVideoRecorded();
-                        lastProgressTime = 0;
-                    }
-                }
-            }
-        }
-    };
-
-    private long lastProgressTime = 0;
-    private long lastDelayTime = 25;
-
-    private Handler progressHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            long now = System.currentTimeMillis();
-            if (lastProgressTime != 0) {
-
-                int beyondTime = (int) (now - lastProgressTime);
-                lastDelayTime = 25 - beyondTime + lastDelayTime;
-            }
-            lastProgressTime = now;
-
-            if (msg.what == 1001) {
-                // 开始绘制
-                float percent = (float) msg.arg1 / 405;
-                setProgress(percent);
-
-                Message nextMsg;
-                // 执行1000次
-                if (startProgress && msg.arg1 != 405) {
-                    nextMsg = obtainMessage();
-                    nextMsg.what = msg.what;
-                    nextMsg.arg1 = msg.arg1 + 1;
-                    sendMessageDelayed(nextMsg, lastDelayTime);
-                } else {
-                    angel = 0;
-
-                    nextMsg = obtainMessage();
-                    nextMsg.what = 1001;
-                    nextMsg.arg1 = 1;
-                    reserveHandler.sendMessage(nextMsg);
-                }
-            }
-        }
-    };
 
     private int dpToPx(Context context, float dp) {
         float scale = context.getResources().getDisplayMetrics().density;
