@@ -61,11 +61,11 @@ public class CircleProgressBar extends AppCompatImageView {
     /**
      * 角度
      */
-    float angel = 180;
+    float angel = 0;
     /**
-     * 开始进度
+     * 文字
      */
-    private boolean startProgress;
+    private String textString = "";
 
     public CircleProgressBar(Context context) {
         super(context);
@@ -85,6 +85,9 @@ public class CircleProgressBar extends AppCompatImageView {
         init();
     }
 
+    /**
+     *
+     */
     private void init() {
 
         paint = new Paint();
@@ -96,7 +99,7 @@ public class CircleProgressBar extends AppCompatImageView {
         textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.parseColor("#F9715D"));
-        textPaint.setTextSize(spToPx(context, 40));
+        textPaint.setTextSize(spToPx(context, 30));
 
         circleBottomPaint = new Paint();
         circleBottomPaint.setAntiAlias(true);
@@ -116,6 +119,7 @@ public class CircleProgressBar extends AppCompatImageView {
 
         rectF = new RectF();
 
+        setPercent(80.6f,200.0f);
     }
 
     @Override
@@ -146,7 +150,6 @@ public class CircleProgressBar extends AppCompatImageView {
         canvas.drawArc(rectF, 270, angel, false, paint);
 
         // 画文字
-        String textString = "50";
         int baseX;
         int baseY;
 
@@ -166,6 +169,14 @@ public class CircleProgressBar extends AppCompatImageView {
     private void setProgress(float progress) {
         angel = progress * 360;
         invalidate();
+    }
+
+    public void setPercent(float percent, float complete) {
+        textString = String.valueOf(percent);
+        if (textString.charAt(textString.length() - 1) == '0') {
+            textString = textString.substring(0, 2);
+        }
+        setProgress(percent / complete);
 
     }
 
