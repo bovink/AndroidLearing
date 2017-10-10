@@ -99,7 +99,7 @@ public class CircleProgressBar extends AppCompatImageView {
         textPaint = new Paint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.parseColor("#F9715D"));
-        textPaint.setTextSize(spToPx(context, 30));
+        textPaint.setTextSize(width / 2);
 
         circleBottomPaint = new Paint();
         circleBottomPaint.setAntiAlias(true);
@@ -119,7 +119,7 @@ public class CircleProgressBar extends AppCompatImageView {
 
         rectF = new RectF();
 
-        setPercent(80.6f,200.0f);
+        setPercent(80.6f, 200.0f);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class CircleProgressBar extends AppCompatImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        outRadius = width / 2 - dpToPx(context, 15);
+        outRadius = width / 2 - dpToPx(context, 2);
         innerRadius = outRadius - dpToPx(context, 10);
 
     }
@@ -136,6 +136,7 @@ public class CircleProgressBar extends AppCompatImageView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        textPaint.setTextSize(width / 4);
 
         canvas.drawCircle(width / 2, height / 2, outRadius, outCirclePaint);
         canvas.drawCircle(width / 2, height / 2, innerRadius, innerCirclePaint);
