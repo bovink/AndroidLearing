@@ -34,6 +34,10 @@ public class CircleProgressBar extends AppCompatImageView {
      */
     Paint paint;
     /**
+     * 环的底部画笔
+     */
+    Paint circleBottomPaint;
+    /**
      * 外园的画笔
      */
     Paint outCirclePaint;
@@ -87,6 +91,12 @@ public class CircleProgressBar extends AppCompatImageView {
         paint.setColor(Color.parseColor("#66ccff"));
         paint.setStrokeWidth(spToPx(context, 4));
         paint.setStyle(Paint.Style.STROKE);
+
+        circleBottomPaint = new Paint();
+        circleBottomPaint.setAntiAlias(true);
+        circleBottomPaint.setColor(Color.parseColor("#000000"));
+        circleBottomPaint.setStrokeWidth(spToPx(context, 1));
+        circleBottomPaint.setStyle(Paint.Style.STROKE);
 
         outCirclePaint = new Paint();
         outCirclePaint.setAntiAlias(true);
@@ -179,6 +189,15 @@ public class CircleProgressBar extends AppCompatImageView {
 
         canvas.drawCircle(width / 2, height / 2, outRadius, outCirclePaint);
         canvas.drawCircle(width / 2, height / 2, innerRadius, innerCirclePaint);
+
+
+        RectF bottomRect = new RectF();
+        bottomRect.set(
+                (width / 2 - outRadius + spToPx(context, 2)),
+                (width / 2 - outRadius + spToPx(context, 2)),
+                (width / 2 + outRadius - spToPx(context, 2)),
+                (width / 2 + outRadius - spToPx(context, 2)));
+        canvas.drawArc(bottomRect, 270, 360, false, circleBottomPaint);
         canvas.drawArc(rectF, 270, angel, false, paint);
 
     }
