@@ -128,7 +128,7 @@ public class CircleProgressBar extends AppCompatImageView {
         width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         outRadius = width / 2 - dpToPx(context, 2);
-        innerRadius = outRadius - dpToPx(context, 10);
+        innerRadius = outRadius - dpToPx(context, 5);
 
     }
 
