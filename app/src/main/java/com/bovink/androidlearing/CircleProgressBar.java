@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
@@ -29,6 +30,10 @@ public class CircleProgressBar extends AppCompatImageView {
      * 环的画笔
      */
     Paint paint;
+    /**
+     * 中间文字的画笔
+     */
+    Paint textPaint;
     /**
      * 环的底部画笔
      */
@@ -88,6 +93,11 @@ public class CircleProgressBar extends AppCompatImageView {
         paint.setStrokeWidth(spToPx(context, 4));
         paint.setStyle(Paint.Style.STROKE);
 
+        textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(Color.parseColor("#F9715D"));
+        textPaint.setTextSize(spToPx(context, 40));
+
         circleBottomPaint = new Paint();
         circleBottomPaint.setAntiAlias(true);
         circleBottomPaint.setColor(Color.parseColor("#CBCBCB"));
@@ -135,6 +145,22 @@ public class CircleProgressBar extends AppCompatImageView {
         canvas.drawArc(rectF, 270, 360, false, circleBottomPaint);
         canvas.drawArc(rectF, 270, angel, false, paint);
 
+        // 画文字
+        String textString = "50";
+        int baseX;
+        int baseY;
+
+        Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
+        int textHeight = fontMetrics.bottom - fontMetrics.top;
+
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(textString, 0, textString.length(), bounds);
+        int textWidth = bounds.right - bounds.left;
+
+        baseX = (this.getWidth() - textWidth) / 2;
+        int top = (this.getHeight() - textHeight) / 2;
+        baseY = top - fontMetrics.top;
+        canvas.drawText(textString, baseX, baseY, textPaint);
     }
 
     private void setProgress(float progress) {
