@@ -70,13 +70,16 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<RadarEntry> entries = new ArrayList<>();
         ArrayList<RadarEntry> entries2 = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            entries.add(new RadarEntry(20));
-            entries2.add(new RadarEntry(40));
+            float num1 = (float) (Math.random() * 40 + 10);
+            entries.add(new RadarEntry(num1));
+
+            float num2 = (float) (Math.random() * 30 + 20);
+            entries2.add(new RadarEntry(num2));
         }
 
         RadarDataSet set = new RadarDataSet(entries, "");
         // 环颜色
-        set.setColor(Color.WHITE);
+        set.setColor(Color.BLACK);
         // 填充颜色
         set.setFillColor(Color.BLUE);
         // 是否填充
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         RadarDataSet set2 = new RadarDataSet(entries2, "");
         // 环颜色
-        set2.setColor(Color.WHITE);
+        set2.setColor(Color.BLACK);
         // 填充颜色
         set2.setFillColor(Color.RED);
         // 是否填充
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(set);
-        sets.add(set2);
+//        sets.add(set2);
 
         RadarData radarData = new RadarData(sets);
         // 环上的字
