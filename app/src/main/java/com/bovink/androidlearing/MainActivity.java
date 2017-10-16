@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import java.util.ArrayList;
 
@@ -53,33 +54,49 @@ public class MainActivity extends AppCompatActivity {
         });
 
         YAxis yAxis = exampleRadarChart.getYAxis();
-        // 设置有几层环
-        yAxis.setLabelCount(5);
+        // 设置有5层环
+        yAxis.setLabelCount(6, true);
+        yAxis.setAxisMinimum(0);
+        //几等分
+        yAxis.setAxisMaximum(50);
         // 设置环上是否有标签
-        yAxis.setDrawLabels(false);
+        yAxis.setDrawLabels(true);
 
         setData();
     }
 
     private void setData() {
         ArrayList<RadarEntry> entries = new ArrayList<>();
+        ArrayList<RadarEntry> entries2 = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             entries.add(new RadarEntry(20));
+            entries2.add(new RadarEntry(40));
         }
 
         RadarDataSet set = new RadarDataSet(entries, "");
-//        // 环颜色
-//        set.setColor(Color.BLACK);
-//        // 填充颜色
-//        set.setFillColor(Color.RED);
-//        // 是否填充
-//        set.setDrawFilled(true);
+        // 环颜色
+        set.setColor(Color.WHITE);
+        // 填充颜色
+        set.setFillColor(Color.BLUE);
+        // 是否填充
+        set.setDrawFilled(true);
 
-        RadarData radarData = new RadarData(set);
+        RadarDataSet set2 = new RadarDataSet(entries2, "");
+        // 环颜色
+        set2.setColor(Color.WHITE);
+        // 填充颜色
+        set2.setFillColor(Color.RED);
+        // 是否填充
+        set2.setDrawFilled(true);
+
+        ArrayList<IRadarDataSet> sets = new ArrayList<>();
+        sets.add(set);
+        sets.add(set2);
+
+        RadarData radarData = new RadarData(sets);
         // 环上的字
         radarData.setDrawValues(false);
         exampleRadarChart.setData(radarData);
-
 
 
     }
