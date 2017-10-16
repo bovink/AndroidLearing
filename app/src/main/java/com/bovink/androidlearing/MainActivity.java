@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         exampleRadarChart.getLegend().setEnabled(false);
         // 去掉描述
         exampleRadarChart.getDescription().setEnabled(false);
+        exampleRadarChart.setRenderer(new MyRenderer(exampleRadarChart, exampleRadarChart.getAnimator(), exampleRadarChart.getViewPortHandler()));
 
         XAxis xAxis = exampleRadarChart.getXAxis();
 
