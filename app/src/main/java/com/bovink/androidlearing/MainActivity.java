@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         //几等分
         yAxis.setAxisMaximum(50);
         // 设置环上是否有标签
-        yAxis.setDrawLabels(true);
+        yAxis.setDrawLabels(false);
 
         setData();
     }
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         // 填充颜色
         set.setFillColor(Color.BLUE);
         // 是否填充
-        set.setDrawFilled(true);
+        set.setDrawFilled(false);
 
         RadarDataSet set2 = new RadarDataSet(entries2, "");
         // 环颜色
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // 填充颜色
         set2.setFillColor(Color.RED);
         // 是否填充
-        set2.setDrawFilled(true);
+        set2.setDrawFilled(false);
 
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(set);
