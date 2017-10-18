@@ -10,8 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bovink.androidlearing.MainActivity">
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/bc_example"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc_example"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </RelativeLayout>
