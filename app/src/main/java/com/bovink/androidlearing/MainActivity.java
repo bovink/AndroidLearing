@@ -3,7 +3,7 @@ package com.bovink.androidlearing;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.bc_example)
-    BarChart exampleBarChart;
+    HorizontalBarChart exampleBarChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +30,18 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.getLegend().setEnabled(false);
 
         XAxis xAxis = exampleBarChart.getXAxis();
-        xAxis.setDrawLabels(false);
+//        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(-0.5f);
+        xAxis.setAxisMaximum(99.5f);
+//        xAxis.setDrawAxisLine(false);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
-        leftYAxis.setDrawLabels(false);
+//        leftYAxis.setDrawLabels(false);
         leftYAxis.setDrawGridLines(false);
-        leftYAxis.setDrawAxisLine(false);
-        leftYAxis.setAxisMaximum(100);
+//        leftYAxis.setDrawAxisLine(false);
+//        leftYAxis.setAxisMaximum(100);
 
         YAxis rightYAxis = exampleBarChart.getAxisRight();
         rightYAxis.setDrawLabels(false);
@@ -46,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
         rightYAxis.setDrawAxisLine(false);
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 30f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        // gap of 2f
-        entries.add(new BarEntry(5f, 70f));
-        entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(80f, 30f));
+//        entries.add(new BarEntry(1f, 80f));
+//        entries.add(new BarEntry(2f, 60f));
+//        entries.add(new BarEntry(3f, 50f));
+//        // gap of 2f
+//        entries.add(new BarEntry(5f, 70f));
+//        entries.add(new BarEntry(6f, 60f));
 
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
 
