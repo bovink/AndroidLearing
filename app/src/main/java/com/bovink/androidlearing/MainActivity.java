@@ -83,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
         set5.setColor(Color.BLUE);
 
         List<IBarDataSet> sets = new ArrayList<>();
-        sets.add(set1);
-        sets.add(set2);
-        sets.add(set3);
-        sets.add(set4);
         sets.add(set5);
+        sets.add(set4);
+        sets.add(set3);
+        sets.add(set2);
+        sets.add(set1);
 
         BarData data = new BarData(sets);
-        data.setDrawValues(false);
         data.setBarWidth(0.2f);
+        data.setDrawValues(false);
+        data.groupBars(6.5f, 0, 0.1f);
         exampleBarChart.setData(data);
     }
 
