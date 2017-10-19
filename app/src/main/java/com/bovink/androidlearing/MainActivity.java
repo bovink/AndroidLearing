@@ -1,14 +1,17 @@
 package com.bovink.androidlearing;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,44 +29,70 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        exampleBarChart.setBackgroundColor(Color.WHITE);
         exampleBarChart.getDescription().setEnabled(false);
-        exampleBarChart.getLegend().setEnabled(false);
+
+        Legend legend = exampleBarChart.getLegend();
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+
 
         XAxis xAxis = exampleBarChart.getXAxis();
-//        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(-0.5f);
-        xAxis.setAxisMaximum(99.5f);
-//        xAxis.setDrawAxisLine(false);
+        xAxis.setAxisMaximum(10.5f);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
-//        leftYAxis.setDrawLabels(false);
         leftYAxis.setDrawGridLines(false);
-//        leftYAxis.setDrawAxisLine(false);
-//        leftYAxis.setAxisMaximum(100);
+        leftYAxis.setAxisMinimum(0);
+        leftYAxis.setAxisMaximum(100);
 
         YAxis rightYAxis = exampleBarChart.getAxisRight();
         rightYAxis.setDrawLabels(false);
         rightYAxis.setDrawGridLines(false);
         rightYAxis.setDrawAxisLine(false);
 
-        List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(80f, 30f));
-//        entries.add(new BarEntry(1f, 80f));
-//        entries.add(new BarEntry(2f, 60f));
-//        entries.add(new BarEntry(3f, 50f));
-//        // gap of 2f
-//        entries.add(new BarEntry(5f, 70f));
-//        entries.add(new BarEntry(6f, 60f));
+        setData();
+    }
 
-        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+    private void setData() {
 
-        BarData data = new BarData(set);
-        data.setBarWidth(0.9f); // set custom bar width
+        List<BarEntry> entries1 = new ArrayList<>();
+        entries1.add(new BarEntry(10, 30f));
+        List<BarEntry> entries2 = new ArrayList<>();
+        entries2.add(new BarEntry(9, 40f));
+        List<BarEntry> entries3 = new ArrayList<>();
+        entries3.add(new BarEntry(8, 35f));
+        List<BarEntry> entries4 = new ArrayList<>();
+        entries4.add(new BarEntry(7, 45f));
+        List<BarEntry> entries5 = new ArrayList<>();
+        entries5.add(new BarEntry(6, 25f));
+
+        BarDataSet set1 = new BarDataSet(entries1, "BarDataSet1");
+        set1.setColor(Color.LTGRAY);
+        BarDataSet set2 = new BarDataSet(entries2, "BarDataSet2");
+        set2.setColor(Color.GRAY);
+        BarDataSet set3 = new BarDataSet(entries3, "BarDataSet3");
+        set3.setColor(Color.DKGRAY);
+        BarDataSet set4 = new BarDataSet(entries4, "BarDataSet4");
+        set4.setColor(Color.BLACK);
+        BarDataSet set5 = new BarDataSet(entries5, "BarDataSet5");
+        set5.setColor(Color.BLUE);
+
+        List<IBarDataSet> sets = new ArrayList<>();
+        sets.add(set1);
+        sets.add(set2);
+        sets.add(set3);
+        sets.add(set4);
+        sets.add(set5);
+
+        BarData data = new BarData(sets);
         data.setDrawValues(false);
+        data.setBarWidth(0.2f);
         exampleBarChart.setData(data);
-        exampleBarChart.setFitBars(true); // make the x-axis fit exactly all bars
     }
 
 }
