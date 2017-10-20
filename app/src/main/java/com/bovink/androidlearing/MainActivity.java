@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         exampleBarChart.setBackgroundColor(Color.WHITE);
         exampleBarChart.getDescription().setEnabled(false);
+        exampleBarChart.getViewPortHandler().setChartDimens(100,200);
 
         Legend legend = exampleBarChart.getLegend();
         legend.setYEntrySpace(0);
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         XAxis xAxis = exampleBarChart.getXAxis();
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(-0.5f);
-        xAxis.setAxisMaximum(10.2f);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(10f);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
         leftYAxis.setDrawGridLines(false);
@@ -90,9 +91,11 @@ public class MainActivity extends AppCompatActivity {
         sets.add(set1);
 
         MyBarData data = new MyBarData(sets);
-        data.setBarWidth(0.2f);
+        // 2即代表20%的X轴
+        data.setBarWidth(2f);
         data.setDrawValues(false);
-        data.groupBarsOpposite(10.1f, 0, 0.12f);
+        // 第三个参数为10即代表为100%的X轴，当fromX为顶点时，默认第一个Bar间隔顶点0.5倍的barSpace
+        data.groupBarsOpposite(10f, 0, 4f);
         exampleBarChart.setData(data);
     }
 
