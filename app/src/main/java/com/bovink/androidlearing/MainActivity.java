@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.getViewPortHandler().setChartDimens(100,200);
 
         Legend legend = exampleBarChart.getLegend();
+        legend.setEnabled(false);
         legend.setYEntrySpace(0);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -41,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         XAxis xAxis = exampleBarChart.getXAxis();
+        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(10f);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
+        leftYAxis.setDrawLabels(false);
         leftYAxis.setDrawGridLines(false);
         leftYAxis.setAxisMinimum(0);
         leftYAxis.setAxisMaximum(100);
@@ -95,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
         data.setBarWidth(2f);
         data.setDrawValues(false);
         // 第三个参数为10即代表为100%的X轴，当fromX为顶点时，默认第一个Bar间隔顶点0.5倍的barSpace
-        data.groupBarsOpposite(10f, 0, 4f);
+        data.groupBarsOpposite(10f, 0, 0f);
         exampleBarChart.setData(data);
+        exampleBarChart.setMinOffset(0);
     }
 
 }
