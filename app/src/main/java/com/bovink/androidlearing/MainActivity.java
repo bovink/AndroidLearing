@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         exampleBarChart.setBackgroundColor(Color.WHITE);
         exampleBarChart.getDescription().setEnabled(false);
-        exampleBarChart.getViewPortHandler().setChartDimens(100,200);
 
         Legend legend = exampleBarChart.getLegend();
         legend.setEnabled(false);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void setData() {
 
         List<BarEntry> entries1 = new ArrayList<>();
-        entries1.add(new BarEntry(10, 30f));
+        entries1.add(new BarEntry(10, 99f));
         List<BarEntry> entries2 = new ArrayList<>();
         entries2.add(new BarEntry(9, 40f));
         List<BarEntry> entries3 = new ArrayList<>();
