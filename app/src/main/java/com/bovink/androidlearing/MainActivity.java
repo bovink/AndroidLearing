@@ -1,6 +1,7 @@
 package com.bovink.androidlearing;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +33,6 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.setBackgroundColor(Color.WHITE);
         exampleBarChart.getDescription().setEnabled(false);
 
-        Legend legend = exampleBarChart.getLegend();
-        legend.setEnabled(true);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setForm(Legend.LegendForm.CIRCLE);
 
 
         XAxis xAxis = exampleBarChart.getXAxis();
@@ -99,6 +95,31 @@ public class MainActivity extends AppCompatActivity {
         data.groupBarsOpposite(10f, 0, 0f);
         exampleBarChart.setData(data);
         exampleBarChart.setMinOffset(0);
+        // 算出圆球到顶端的距离
+        // 算出label之间的间距
+
+        Legend legend = exampleBarChart.getLegend();
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+
+        legend.setFormSize(20);
+        legend.setTextSize(9);
+
+        Paint mLegendLabelPaint = exampleBarChart.getLegendRenderer().getLabelPaint();
+        Paint.FontMetrics legendFontMetrics = new Paint.FontMetrics();
+
+        float labelLineHeight = Utils.getLineHeight(mLegendLabelPaint, legendFontMetrics);
+        float labelLineSpacing = Utils.getLineSpacing(mLegendLabelPaint, legendFontMetrics)
+                + Utils.convertDpToPixel(legend.getYEntrySpace());
+        float formYOffset = labelLineHeight - Utils.calcTextHeight(mLegendLabelPaint, "ABC") / 2.f;
+        System.out.println("labelLineHeight = " + labelLineHeight);
+        System.out.println("labelLineSpacing = " + labelLineSpacing);
+        System.out.println("formYOffset = " + formYOffset);
+
+        legend.setYEntrySpace(30);
+        System.out.println("DensityUtils.dpToPx(this, 10) = " + DensityUtils.dpToPx(this, 10));
     }
 
 }
