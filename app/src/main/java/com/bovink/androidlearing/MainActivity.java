@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.getDescription().setEnabled(false);
 
         Legend legend = exampleBarChart.getLegend();
-        legend.setEnabled(false);
-        legend.setYEntrySpace(0);
+        legend.setEnabled(true);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         XAxis xAxis = exampleBarChart.getXAxis();
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(10f);
 
