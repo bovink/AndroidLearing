@@ -8,7 +8,6 @@ import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.getDescription().setEnabled(false);
 
         Legend legend = exampleBarChart.getLegend();
+        legend.setYEntrySpace(0);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(-0.5f);
-        xAxis.setAxisMaximum(10.5f);
+        xAxis.setAxisMaximum(10.2f);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
         leftYAxis.setDrawGridLines(false);
@@ -89,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
         sets.add(set2);
         sets.add(set1);
 
-        BarData data = new BarData(sets);
+        MyBarData data = new MyBarData(sets);
         data.setBarWidth(0.2f);
         data.setDrawValues(false);
-        data.groupBars(6.5f, 0, 0.1f);
+        data.groupBarsOpposite(10.1f, 0, 0.12f);
         exampleBarChart.setData(data);
     }
 
