@@ -1,6 +1,7 @@
 package com.bovink.androidlearing;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 
 import com.github.mikephil.charting.components.Legend;
@@ -185,6 +186,7 @@ public class MyLegendRenderer extends LegendRenderer {
                 break;
             }
 
+            // 垂直
             case VERTICAL: {
                 // contains the stacked legend size in pixels
                 float stack = 0f;
@@ -196,9 +198,7 @@ public class MyLegendRenderer extends LegendRenderer {
                         posY = (horizontalAlignment == Legend.LegendHorizontalAlignment.CENTER
                                 ? 0.f
                                 : mViewPortHandler.contentTop());
-                        System.out.println("yoffset = " + yoffset);
                         posY += yoffset;
-                        System.out.println("posY = " + posY);
                         break;
 
                     case BOTTOM:
@@ -229,7 +229,8 @@ public class MyLegendRenderer extends LegendRenderer {
                         else
                             posX -= formSize - stack;
 
-                        drawForm(c, posX, posY + formYOffset, e, mLegend);
+                        // 画图形
+                        drawForm(c, posX, posY + 60, e, mLegend);
 
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                             posX += formSize;
@@ -246,15 +247,23 @@ public class MyLegendRenderer extends LegendRenderer {
                         if (direction == Legend.LegendDirection.RIGHT_TO_LEFT)
                             posX -= Utils.calcTextWidth(mLegendLabelPaint, e.label);
 
+                        int baseY;
+                        Paint.FontMetricsInt fontMetrics = mLegendLabelPaint.getFontMetricsInt();
+                        int textHeight = fontMetrics.bottom - fontMetrics.top;
+                        int top = (120 - textHeight) / 2;
+                        baseY = top - fontMetrics.top;
+
+                        // 画标签
                         if (!wasStacked) {
-                            drawLabel(c, posX, posY + labelLineHeight, e.label);
+                            drawLabel(c, posX, posY +  baseY, e.label);
                         } else {
                             posY += labelLineHeight + labelLineSpacing;
-                            drawLabel(c, posX, posY + labelLineHeight, e.label);
+                            drawLabel(c, posX, posY, e.label);
                         }
 
                         // make a step down
-                        posY += labelLineHeight + labelLineSpacing;
+                        posY += 120;
+                        System.out.println("labelLineHeight + labelLineSpacing = " + labelLineHeight + labelLineSpacing);
                         stack = 0f;
                     } else {
                         stack += formSize + stackSpace;
@@ -266,5 +275,11 @@ public class MyLegendRenderer extends LegendRenderer {
 
             }
         }
+    }
+
+    @Override
+    protected void drawForm(Canvas c, float x, float y, LegendEntry entry, Legend legend) {
+        super.drawForm(c, x, y, entry, legend);
+        System.out.println("y = " + y);
     }
 }

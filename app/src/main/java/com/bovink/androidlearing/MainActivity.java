@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setFormSize(40);
+        legend.setTextSize(40);
         legend.setYOffset(0);
 
     }
