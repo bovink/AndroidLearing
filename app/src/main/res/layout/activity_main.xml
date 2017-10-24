@@ -10,5 +10,5 @@
     <com.bovink.androidlearing.MyHorizontalBarChart
         android:id="@+id/bc_example"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="270dp"/>
 </RelativeLayout>

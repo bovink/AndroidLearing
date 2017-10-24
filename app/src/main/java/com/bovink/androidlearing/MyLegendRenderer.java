@@ -230,7 +230,7 @@ public class MyLegendRenderer extends LegendRenderer {
                             posX -= formSize - stack;
 
                         // 画图形
-                        drawForm(c, posX, posY + 60, e, mLegend);
+                        drawForm(c, posX, posY + 15, e, mLegend);// y坐标初始是0，所以加个半径让图形贴近边缘
 
                         if (direction == Legend.LegendDirection.LEFT_TO_RIGHT)
                             posX += formSize;
@@ -250,7 +250,7 @@ public class MyLegendRenderer extends LegendRenderer {
                         int baseY;
                         Paint.FontMetricsInt fontMetrics = mLegendLabelPaint.getFontMetricsInt();
                         int textHeight = fontMetrics.bottom - fontMetrics.top;
-                        int top = (120 - textHeight) / 2;
+                        int top = (30 - textHeight) / 2;// 30为圆图形的宽高，以此为标准获取画文字的中心点
                         baseY = top - fontMetrics.top;
 
                         // 画标签
@@ -262,7 +262,7 @@ public class MyLegendRenderer extends LegendRenderer {
                         }
 
                         // make a step down
-                        posY += 120;
+                        posY += 30 + 30;// 除了加了图形的高度外，再加上间隔的高度
                         System.out.println("labelLineHeight + labelLineSpacing = " + labelLineHeight + labelLineSpacing);
                         stack = 0f;
                     } else {

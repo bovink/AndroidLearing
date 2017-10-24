@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         exampleBarChart.setBackgroundColor(Color.WHITE);
         exampleBarChart.getDescription().setEnabled(false);
 
-
-
         XAxis xAxis = exampleBarChart.getXAxis();
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
@@ -86,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
         MyBarData data = new MyBarData(sets);
         // 2即代表20%的X轴
-        data.setBarWidth(2f);
+        data.setBarWidth(10.0f/27.0f);
         data.setDrawValues(false);
         // 第三个参数为10即代表为100%的X轴，当fromX为顶点时，默认第一个Bar间隔顶点0.5倍的barSpace
-        data.groupBarsOpposite(10f, 0, 0f);
+        data.groupBarsOpposite(10f, 0, 10.0f/27.0f);
         exampleBarChart.setData(data);
         exampleBarChart.setMinOffset(0);
         // 算出圆球到顶端的距离
@@ -100,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setFormSize(40);
-        legend.setTextSize(40);
-        legend.setYOffset(0);
+        legend.setFormSize(10);
+        legend.setTextSize(10);
+        legend.setYOffset(5);
 
     }
 
