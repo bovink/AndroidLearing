@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMinimum(0f);// 必须设置
         xAxis.setAxisMaximum(10f);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
