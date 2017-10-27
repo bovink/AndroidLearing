@@ -1,5 +1,6 @@
 package com.bovink.androidlearing;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,7 +11,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.bc_example)
     BarChart exampleBarChart;
+    float max = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         exampleBarChart.getDescription().setEnabled(false);
+        exampleBarChart.setMaxVisibleValueCount(1000);
 
         XAxis xAxis = exampleBarChart.getXAxis();
-        xAxis.setDrawLabels(true);
+        xAxis.setDrawLabels(false);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
 
@@ -48,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
         rightYAxis.setDrawAxisLine(false);
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, 100f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        // gap of 2f
-        entries.add(new BarEntry(5f, 70f));
-        entries.add(new BarEntry(6f, 60f));
+        for (int i = 0; i < 90; i++) {
+            float y = (float) (Math.random() * 50 + 50);
+            if (y > max) {
+                max = y;
+            }
+            entries.add(new BarEntry(i, y));
+        }
+        System.out.println("max = " + max);
 
         List<BarEntry> entries2 = new ArrayList<>();
         entries2.add(new BarEntry(0f, -100f));
@@ -68,8 +75,20 @@ public class MainActivity extends AppCompatActivity {
         sets.add(set2);
 
         BarData data = new BarData(sets);
+        data.setValueTextSize(12);
+        data.setValueTextColor(Color.parseColor("#000000"));
+
+        data.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                if (value == max) {
+                    return String.valueOf(value);
+                }
+                return "";
+            }
+        });
         data.setBarWidth(0.9f); // set custom bar width
-        data.setDrawValues(false);
+//        data.setDrawValues(false);
         exampleBarChart.setData(data);
         exampleBarChart.setFitBars(true); // make the x-axis fit exactly all bars
 
