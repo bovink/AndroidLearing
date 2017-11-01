@@ -42,33 +42,33 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setDrawAxisLine(false);
 
         YAxis leftYAxis = exampleBarChart.getAxisLeft();
-        leftYAxis.setDrawLabels(false);
+//        leftYAxis.setDrawLabels(false);
         leftYAxis.setDrawGridLines(false);
         leftYAxis.setDrawAxisLine(false);
         leftYAxis.setDrawZeroLine(true);
+        leftYAxis.setAxisMinimum(-100);
         leftYAxis.setAxisMaximum(100);
 
         YAxis rightYAxis = exampleBarChart.getAxisRight();
-        rightYAxis.setDrawLabels(false);
+//        rightYAxis.setDrawLabels(false);
         rightYAxis.setDrawGridLines(false);
         rightYAxis.setDrawAxisLine(false);
+        rightYAxis.setDrawZeroLine(true);
+        rightYAxis.setAxisMinimum(-60);
+        rightYAxis.setAxisMaximum(60);
 
         List<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 90; i++) {
-            float y = (float) (Math.random() * 50 + 50);
-            if (y > max) {
-                max = y;
-            }
-            entries.add(new BarEntry(i, y));
-        }
-        System.out.println("max = " + max);
+        entries.add(new BarEntry(0, 70));
 
         List<BarEntry> entries2 = new ArrayList<>();
-        entries2.add(new BarEntry(0f, -100f));
+        entries2.add(new BarEntry(1, -55));
 
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
+        set.setColor(Color.RED);
 
         BarDataSet set2 = new BarDataSet(entries2, "aaa");
+        set2.setColor(Color.BLUE);
+        set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
         List<IBarDataSet> sets = new ArrayList<>();
         sets.add(set);
