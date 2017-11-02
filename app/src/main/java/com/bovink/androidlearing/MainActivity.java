@@ -4,27 +4,34 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnTouch;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_video)
     TextureView videoTextureView;
+    @BindView(R.id.activity_main)
+    RelativeLayout mainRelativeLayout;
 
     private MediaPlayer mediaPlayer;
 
     String path;
+
+    private MediaController mediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         videoTextureView.setVisibility(View.GONE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        } else {
+            videoTextureView.setVisibility(View.VISIBLE);
+            videoTextureView.setSurfaceTextureListener(new MySurfaceTextureListener());
         }
 
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/kekai/video.mp4";
@@ -73,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
         }
         mediaPlayer.start();
 
+        mediaController = new MediaController(this);
+        mediaController.setMediaPlayer(new MyMediaPlayerController());
+        mediaController.setAnchorView(mainRelativeLayout);
+        mediaController.setEnabled(true);
+        mediaController.show();
     }
 
     private class MySurfaceTextureListener implements TextureView.SurfaceTextureListener {
@@ -96,6 +111,73 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
+        }
+    }
+
+    @OnTouch(R.id.activity_main)
+    boolean touchScreen() {
+
+        mediaController.show();
+        return false;
+    }
+
+    private class MyMediaPlayerController implements MediaController.MediaPlayerControl {
+
+        @Override
+        public void start() {
+
+            mediaPlayer.start();
+        }
+
+        @Override
+        public void pause() {
+
+            mediaPlayer.pause();
+        }
+
+        @Override
+        public int getDuration() {
+            return mediaPlayer.getDuration();
+        }
+
+        @Override
+        public int getCurrentPosition() {
+            return mediaPlayer.getCurrentPosition();
+        }
+
+        @Override
+        public void seekTo(int pos) {
+            mediaPlayer.seekTo(pos);
+        }
+
+        @Override
+        public boolean isPlaying() {
+            return mediaPlayer.isPlaying();
+        }
+
+        @Override
+        public int getBufferPercentage() {
+            return 20;
+        }
+
+        @Override
+        public boolean canPause() {
+            return true;
+        }
+
+        @Override
+        public boolean canSeekBackward() {
+            return true;
+        }
+
+        @Override
+        public boolean canSeekForward() {
+            return true;
+        }
+
+        @Override
+        public int getAudioSessionId() {
+            return mediaPlayer.getAudioSessionId();
         }
     }
 }
