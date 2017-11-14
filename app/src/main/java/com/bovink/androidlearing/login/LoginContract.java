@@ -12,9 +12,13 @@ interface LoginContract {
 
     interface View extends BaseView {
 
+        void showLoading();
+
+        void showMainActivity();
     }
 
     interface Presenter extends BasePresenter<View> {
 
+        void login(String username, String password);
     }
 }
