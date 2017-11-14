@@ -16,6 +16,12 @@ import com.bovink.androidlearing.R;
 
 public class LoginFragment extends Fragment implements LoginContract.View {
 
+    private LoginContract.Presenter mPresenter;
+
+    public LoginFragment(LoginContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,5 +32,6 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        mPresenter.bindView(this);
     }
 }
