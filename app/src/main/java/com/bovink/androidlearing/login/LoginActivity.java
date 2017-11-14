@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginPresenter = new LoginPresenter();
 
-        loginFragment = new LoginFragment(loginPresenter);
+        loginFragment = LoginFragment.newInstance(loginPresenter);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_login_content, loginFragment)

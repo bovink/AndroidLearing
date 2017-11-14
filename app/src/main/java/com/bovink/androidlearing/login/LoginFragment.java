@@ -27,8 +27,11 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     private EditText usernameEditText;
     private EditText passwordEditText;
 
-    public LoginFragment(LoginContract.Presenter presenter) {
-        mPresenter = presenter;
+    public static LoginFragment newInstance(LoginContract.Presenter presenter){
+        LoginFragment fragment = new LoginFragment();
+        fragment.mPresenter = presenter;
+
+        return fragment;
     }
 
     @Override
