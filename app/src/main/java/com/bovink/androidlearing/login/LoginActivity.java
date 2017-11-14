@@ -11,11 +11,21 @@ import com.bovink.androidlearing.R;
  * @since 2017/11/14
  */
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
+
+    private LoginFragment loginFragment;
+
+    private LoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginFragment = new LoginFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_login_content, loginFragment)
+                .commit();
     }
 }
