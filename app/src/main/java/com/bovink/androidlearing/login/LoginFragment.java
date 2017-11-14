@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.bovink.androidlearing.MainActivity;
 import com.bovink.androidlearing.R;
@@ -26,6 +26,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     private Context mContext;
     private EditText usernameEditText;
     private EditText passwordEditText;
+    private ProgressBar loginingProgressBar;
 
     public static LoginFragment newInstance(LoginContract.Presenter presenter){
         LoginFragment fragment = new LoginFragment();
@@ -60,6 +61,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
         usernameEditText = (EditText) root.findViewById(R.id.et_username);
         passwordEditText = (EditText) root.findViewById(R.id.et_password);
+        loginingProgressBar = (ProgressBar) root.findViewById(R.id.pb_login_ing);
         return root;
     }
 
@@ -71,7 +73,12 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showLoading() {
-        Toast.makeText(mContext, "正在登陆中", Toast.LENGTH_SHORT).show();
+        loginingProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        loginingProgressBar.setVisibility(View.GONE);
     }
 
     @Override

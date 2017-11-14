@@ -14,6 +14,8 @@ interface LoginContract {
 
         void showLoading();
 
+        void hideLoading();
+
         void showMainActivity();
     }
 

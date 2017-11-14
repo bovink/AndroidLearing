@@ -19,6 +19,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(String username, String password) {
         if (username.equals("lilei") && password.equals("123456")) {
 
+            mView.hideLoading();
             mView.showMainActivity();
         }
     }
