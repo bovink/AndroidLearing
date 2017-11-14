@@ -30,4 +30,11 @@ public class LoginActivity extends AppCompatActivity {
                 .replace(R.id.fl_login_content, loginFragment)
                 .commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!loginFragment.interceptBackPressed()) {
+            super.onBackPressed();
+        }
+    }
 }

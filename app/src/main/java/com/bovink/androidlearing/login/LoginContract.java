@@ -17,6 +17,8 @@ interface LoginContract {
         void hideLoading();
 
         void showMainActivity();
+
+        boolean interceptBackPressed();
     }
 
     interface Presenter extends BasePresenter<View> {

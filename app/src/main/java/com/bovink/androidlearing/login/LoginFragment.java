@@ -28,7 +28,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     private EditText passwordEditText;
     private ProgressBar loginingProgressBar;
 
-    public static LoginFragment newInstance(LoginContract.Presenter presenter){
+    public static LoginFragment newInstance(LoginContract.Presenter presenter) {
         LoginFragment fragment = new LoginFragment();
         fragment.mPresenter = presenter;
 
@@ -85,5 +85,15 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     public void showMainActivity() {
         Intent intent = new Intent(mContext, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean interceptBackPressed() {
+        // 如果正在显示ProgressBar则拦截返回按键事件，并隐藏ProgressBar
+        if (loginingProgressBar.getVisibility() == View.VISIBLE) {
+            hideLoading();
+            return true;
+        }
+        return false;
     }
 }
