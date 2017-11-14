@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bovink.androidlearing.MainActivity;
 import com.bovink.androidlearing.R;
@@ -85,6 +86,11 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     public void showMainActivity() {
         Intent intent = new Intent(mContext, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showToast(String content) {
+        Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
     }
 
     @Override

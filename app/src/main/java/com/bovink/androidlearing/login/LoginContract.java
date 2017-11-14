@@ -18,6 +18,8 @@ interface LoginContract {
 
         void showMainActivity();
 
+        void showToast(String content);
+
         boolean interceptBackPressed();
     }
 
