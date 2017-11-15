@@ -49,11 +49,13 @@ public class LoginMvcFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                showLoading();
+                loginingProgressBar.setVisibility(View.VISIBLE);
 
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                login(username,password);
+                Message msg = new Message();
+                msg.obj = username + "@" + password;
+                fakeHttpHandler.sendMessageDelayed(msg, 3000);
             }
         });
 
@@ -63,42 +65,15 @@ public class LoginMvcFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
-    public void showLoading() {
-        loginingProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLoading() {
-        loginingProgressBar.setVisibility(View.GONE);
-    }
-
-    public void showMainActivity() {
-        Intent intent = new Intent(mContext, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void showToast(String content) {
-        Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
-    }
-
     public boolean interceptBackPressed() {
         // 如果正在显示ProgressBar则拦截返回按键事件，并隐藏ProgressBar
         if (loginingProgressBar.getVisibility() == View.VISIBLE) {
-            hideLoading();
+            loginingProgressBar.setVisibility(View.GONE);
             return true;
         }
         return false;
     }
 
-    public void login(String username, String password) {
-        Message msg = new Message();
-        msg.obj = username + "@" + password;
-        fakeHttpHandler.sendMessageDelayed(msg, 3000);
-    }
 
     /**
      * 模拟网络请求
@@ -111,14 +86,15 @@ public class LoginMvcFragment extends Fragment {
             String username = userInfo[0];
             String password = userInfo[1];
 
-            hideLoading();
+            loginingProgressBar.setVisibility(View.GONE);
             if (username.equals("lilei") && password.equals("123456")) {
 
-                showToast("登录成功");
-                showMainActivity();
+                Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
             } else {
 
-                showToast("登录失败");
+                Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
             }
         }
     };
