@@ -3,6 +3,8 @@ package com.bovink.androidlearing.login;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.bovink.androidlearing.R;
 
@@ -12,6 +14,9 @@ import com.bovink.androidlearing.R;
  */
 
 public class LoginActivity extends AppCompatActivity {
+
+    private TextView backActivityTextView;
+    private TextView activityTitleTextView;
 
     private LoginFragment loginFragment;
 
@@ -25,6 +30,16 @@ public class LoginActivity extends AppCompatActivity {
         loginPresenter = new LoginPresenter();
 
         loginFragment = LoginFragment.newInstance(loginPresenter);
+
+        backActivityTextView = (TextView) findViewById(R.id.tv_back_activity);
+        backActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        activityTitleTextView = (TextView) findViewById(R.id.tv_activity_title);
+        activityTitleTextView.setText("登录");
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_login_content, loginFragment)

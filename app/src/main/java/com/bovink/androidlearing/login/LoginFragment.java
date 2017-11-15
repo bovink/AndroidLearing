@@ -52,10 +52,19 @@ public class LoginFragment extends Fragment implements LoginContract.View {
             @Override
             public void onClick(View v) {
 
-                showLoading();
-
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+
+                if (username.isEmpty()) {
+                    showToast("用户名不能为空");
+                    return;
+                }
+                if (password.isEmpty()) {
+                    showToast("密码不能为空");
+                    return;
+                }
+
+                showLoading();
                 mPresenter.login(username, password);
             }
         });
