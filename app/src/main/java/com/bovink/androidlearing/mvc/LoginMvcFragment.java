@@ -49,10 +49,21 @@ public class LoginMvcFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                loginingProgressBar.setVisibility(View.VISIBLE);
 
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+
+                if (username.isEmpty()) {
+                    Toast.makeText(mContext, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast.makeText(mContext, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                loginingProgressBar.setVisibility(View.VISIBLE);
+
                 Message msg = new Message();
                 msg.obj = username + "@" + password;
                 fakeHttpHandler.sendMessageDelayed(msg, 3000);

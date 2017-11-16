@@ -3,6 +3,8 @@ package com.bovink.androidlearing.mvc;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.bovink.androidlearing.R;
 
@@ -15,12 +17,25 @@ import com.bovink.androidlearing.R;
 
 public class LoginMvcActivity extends AppCompatActivity {
 
+    private TextView backActivityTextView;
+    private TextView activityTitleTextView;
+
     private LoginMvcFragment loginMvcFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        backActivityTextView = (TextView) findViewById(R.id.tv_back_activity);
+        backActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        activityTitleTextView = (TextView) findViewById(R.id.tv_activity_title);
+        activityTitleTextView.setText("登录");
 
         loginMvcFragment = new LoginMvcFragment();
 
