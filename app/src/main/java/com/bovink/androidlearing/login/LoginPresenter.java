@@ -28,7 +28,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                 mView.showToast("登录成功");
                 mView.showMainActivity();
-            }else {
+            } else {
 
                 mView.showToast("登录失败");
             }
