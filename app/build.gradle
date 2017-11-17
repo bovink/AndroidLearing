@@ -12,6 +12,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -22,7 +23,7 @@ android {
 
 greendao {
     schemaVersion 1000
-    daoPackage 'com.bovink.androidlearning.gen'
+    daoPackage 'com.bovink.androidlearing.gen'
     targetGenDir 'src/main/java'
 }
 
@@ -37,4 +38,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
     compile 'org.greenrobot:greendao:3.2.2'
+    compile 'net.zetetic:android-database-sqlcipher:3.5.6'
 }
