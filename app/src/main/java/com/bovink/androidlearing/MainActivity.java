@@ -11,27 +11,60 @@ import com.bovink.androidlearing.orm.User;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private DaoMaster.DevOpenHelper helper;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private UserDao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "user.db", null);
-        DaoMaster daoMaster = new DaoMaster(helper.getEncryptedWritableDb("123"));
-        DaoSession daoSession = daoMaster.newSession();
-        UserDao userDao = daoSession.getUserDao();
+        helper = new DaoMaster.DevOpenHelper(this, "user.db", null);
+        daoMaster = new DaoMaster(helper.getEncryptedWritableDb("123"));
+        daoSession = daoMaster.newSession();
+        userDao = daoSession.getUserDao();
 
-        User extraUser = new User(null, "jj", "44");
-        userDao.insert(extraUser);
 
-        List<User> userList = userDao.loadAll();
-        for (User user: userList) {
+
+
+        querySome();
+
+    }
+
+    private void querySome() {
+        List<User> userList = userDao.queryBuilder()
+                .where(UserDao.Properties.Name.eq("lilei"))
+                .list();
+        for (User user : userList) {
             System.out.println("user.getId() = " + user.getId());
             System.out.println("user.getName() = " + user.getName());
             System.out.println("user.getAge() = " + user.getAge());
 
         }
+    }
 
+    private void load(long id) {
+        User user = userDao.load(id);
+
+        System.out.println("user.getId() = " + user.getId());
+        System.out.println("user.getName() = " + user.getName());
+        System.out.println("user.getAge() = " + user.getAge());
+    }
+
+    private void insert() {
+        User user = new User(null, "lilei", "23");
+        userDao.insert(user);
+    }
+
+    private void showAll() {
+        List<User> userList = userDao.loadAll();
+        for (User user : userList) {
+            System.out.println("user.getId() = " + user.getId());
+            System.out.println("user.getName() = " + user.getName());
+            System.out.println("user.getAge() = " + user.getAge());
+
+        }
     }
 }
