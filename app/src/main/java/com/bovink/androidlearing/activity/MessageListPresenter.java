@@ -7,6 +7,7 @@ import javax.inject.Inject;
  * @since 2017/11/20
  */
 
+@ActivityScoped
 public class MessageListPresenter implements MessageListContract.Presenter {
 
     private MessageListContract.View mView;
