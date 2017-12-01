@@ -3,8 +3,8 @@ package com.bovink.androidlearing;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
 import com.bovink.androidlearing.service.LocationService;
 
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         locationService.start();
     }
 
-    private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
+    private BDLocationListener mListener = new BDLocationListener() {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
