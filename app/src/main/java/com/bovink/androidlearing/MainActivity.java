@@ -2,6 +2,7 @@ package com.bovink.androidlearing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
@@ -13,18 +14,90 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.tv_text)
+    TextView textView;
 
     private EventManager eventManager;
 
-    private EventListener eventListener = new EventListener() {
+    private EventListener eventListener;
+
+    private IRecogListener iRecogListener = new IRecogListener() {
         @Override
-        public void onEvent(String name, String params, byte[] data, int offset, int length) {
-            System.out.println("name = " + name);
-            System.out.println("params = " + params);
+        public void onAsrReady() {
+
+
+        }
+
+        @Override
+        public void onAsrBegin() {
+
+        }
+
+        @Override
+        public void onAsrEnd() {
+
+        }
+
+        @Override
+        public void onAsrPartialResult(String[] results, RecogResult recogResult) {
+
+            textView.setText(results[0]);
+        }
+
+        @Override
+        public void onAsrFinalResult(String[] results, RecogResult recogResult) {
+
+            textView.setText(results[0]);
+        }
+
+        @Override
+        public void onAsrFinish(RecogResult recogResult) {
+
+        }
+
+        @Override
+        public void onAsrFinishError(int errorCode, int subErrorCode, String errorMessage, String descMessage, RecogResult recogResult) {
+
+        }
+
+        @Override
+        public void onAsrLongFinish() {
+
+        }
+
+        @Override
+        public void onAsrVolume(int volumePercent, int volume) {
+
+        }
+
+        @Override
+        public void onAsrAudio(byte[] data, int offset, int length) {
+
+        }
+
+        @Override
+        public void onAsrExit() {
+
+        }
+
+        @Override
+        public void onAsrOnlineNluResult(String nluResult) {
+
+        }
+
+        @Override
+        public void onOfflineLoaded() {
+
+        }
+
+        @Override
+        public void onOfflineUnLoaded() {
+
         }
     };
 
@@ -54,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initEventManager() {
         eventManager = EventManagerFactory.create(this, "asr");
+        eventListener = new RecogEventAdapter(iRecogListener);
         eventManager.registerListener(eventListener);
 
     }
