@@ -25,6 +25,8 @@
             android:name="com.baidu.speech.SECRET_KEY"
             android:value="7la28gRMgv2NAybIWb9yim8ewf61DG6f" />
 
+        <service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
