@@ -10,7 +10,11 @@ import com.baidu.speech.asr.SpeechConstant;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +32,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        initEventManager();
     }
 
     @Override
     protected void onDestroy() {
         release();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.btn_click)
+    void onClick() {
+        Map<String, Object> map = new HashMap<>();
+        PidBuilder pidBuilder = new PidBuilder();
+        map = pidBuilder.addPidInfo(map);
+
+        start(map);
     }
 
     private void initEventManager() {
