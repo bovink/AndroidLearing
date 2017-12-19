@@ -15,7 +15,7 @@ import retrofit2.http.QueryMap;
 
 public interface IdentifyRestApi {
 
-    @Headers("Content-Type: audio/pcm;rate=16000")
+    @Headers("Content-Type: audio/wav;rate=16000")
     @POST("server_api")
     Single<Void> identifyAudioFile(
             @QueryMap Map<String, String> params,

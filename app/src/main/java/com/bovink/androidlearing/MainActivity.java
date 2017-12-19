@@ -29,11 +29,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         initEventManager();
 
-        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.pcm";
+        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.wav";
         System.out.println("testFileName = " + testFileName);
 //        getAccessToken();
     }
@@ -153,23 +151,29 @@ public class MainActivity extends AppCompatActivity {
 //
 //        start(map);
 
-        compositeDisposable.add(Completable.complete().observeOn(Schedulers.io())
-                .subscribeWith(new DisposableCompletableObserver() {
-                    @Override
-                    public void onComplete() {
+        try {
+            identifyAudio();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                        try {
-                            method2();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                }));
+//        compositeDisposable.add(Completable.complete().observeOn(Schedulers.io())
+//                .subscribeWith(new DisposableCompletableObserver() {
+//                    @Override
+//                    public void onComplete() {
+//
+//                        try {
+//                            method2();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//
+//                    }
+//                }));
     }
 
     private void initEventManager() {
@@ -241,20 +245,9 @@ public class MainActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<>();
         params.put("cuid", DeviceUtils.getIMEI(this));
         params.put("token", "24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
-        params.put("lan", "zh");
 
-//        File file = new File("file:///android_asset/8k.pcm");
-//        //init array with file length
-//        byte[] bytesArray = new byte[(int) file.length()];
-//
-//        FileInputStream fis = new FileInputStream(file);
-//        fis.read(bytesArray); //read file into bytes[]
-//        fis.close();
-
-        InputStream is = getAssets().open("16k.pcm");
-        byte[] fileBytes = new byte[is.available()];
-        is.read(fileBytes);
-        is.close();
+        File file = new File(testFileName);
+        byte[] fileBytes = loadFile(file);
 
         compositeDisposable.add(ApiUtils.getIdentifyRestApi()
                 .identifyAudioFile(params, fileBytes)
