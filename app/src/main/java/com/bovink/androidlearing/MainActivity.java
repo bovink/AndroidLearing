@@ -34,6 +34,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_text)
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         initEventManager();
 
-        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.wav";
+        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.pcm";
         System.out.println("testFileName = " + testFileName);
 //        getAccessToken();
     }
@@ -247,10 +250,11 @@ public class MainActivity extends AppCompatActivity {
         params.put("token", "24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
 
         File file = new File(testFileName);
-        byte[] fileBytes = loadFile(file);
+        RequestBody body = RequestBody.create(MediaType.parse("audio/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("", file.getName(), body);
 
         compositeDisposable.add(ApiUtils.getIdentifyRestApi()
-                .identifyAudioFile(params, fileBytes)
+                .identifyAudioFile(params, part)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<Void>() {
