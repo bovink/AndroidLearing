@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable = new CompositeDisposable();
 
         initEventManager();
-        getAccessToken();
+//        getAccessToken();
     }
 
     @Override
@@ -224,13 +224,13 @@ public class MainActivity extends AppCompatActivity {
 //        fis.read(bytesArray); //read file into bytes[]
 //        fis.close();
 
-        InputStream is = getAssets().open("8k.pcm");
+        InputStream is = getAssets().open("16k.pcm");
         byte[] fileBytes = new byte[is.available()];
         is.read(fileBytes);
         is.close();
 
         compositeDisposable.add(ApiUtils.getIdentifyRestApi()
-                .identifyAudioFile(params, fileBytes, "audio/pcm", 16000)
+                .identifyAudioFile(params, fileBytes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<Void>() {
