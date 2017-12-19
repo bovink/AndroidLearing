@@ -9,6 +9,8 @@ public class ApiUtils {
 
     public static AccessTokenApi accessTokenApi;
 
+    public static IdentifyRestApi identifyRestApi;
+
     public static AccessTokenApi getAccessTokenApi() {
         if (accessTokenApi == null) {
 
@@ -17,5 +19,15 @@ public class ApiUtils {
         }
 
         return accessTokenApi;
+    }
+
+    public static IdentifyRestApi getIdentifyRestApi() {
+        if (identifyRestApi == null) {
+
+            identifyRestApi = RetrofitUtils.retrofit(HttpUtils.REST_HOST)
+                    .create(IdentifyRestApi.class);
+        }
+
+        return identifyRestApi;
     }
 }

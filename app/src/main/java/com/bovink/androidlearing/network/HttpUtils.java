@@ -12,4 +12,9 @@ public class HttpUtils {
      */
     public final static String HOST = "https://openapi.baidu.com/";
 
+    /**
+     * rest api的服务器地址
+     */
+    public final static String REST_HOST = "http://vop.baidu.com/";
+
 }

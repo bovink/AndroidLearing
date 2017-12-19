@@ -9,9 +9,12 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.bovink.androidlearing.network.ApiUtils;
+import com.bovink.androidlearing.utils.DeviceUtils;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,11 +132,17 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_click)
     void onClick() {
-        Map<String, Object> map = new HashMap<>();
-        PidBuilder pidBuilder = new PidBuilder();
-        map = pidBuilder.addPidInfo(map);
+//        Map<String, Object> map = new HashMap<>();
+//        PidBuilder pidBuilder = new PidBuilder();
+//        map = pidBuilder.addPidInfo(map);
+//
+//        start(map);
 
-        start(map);
+        try {
+            identifyAudio();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initEventManager() {
@@ -186,6 +195,42 @@ public class MainActivity extends AppCompatActivity {
 
         compositeDisposable.add(ApiUtils.getAccessTokenApi()
                 .getAccessToken(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<Void>() {
+                    @Override
+                    public void onSuccess(@NonNull Void aVoid) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                }));
+    }
+
+    private void identifyAudio() throws IOException {
+        Map<String, String> params = new HashMap<>();
+        params.put("cuid", DeviceUtils.getIMEI(this));
+        params.put("token", "24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
+        params.put("lan", "zh");
+
+//        File file = new File("file:///android_asset/8k.pcm");
+//        //init array with file length
+//        byte[] bytesArray = new byte[(int) file.length()];
+//
+//        FileInputStream fis = new FileInputStream(file);
+//        fis.read(bytesArray); //read file into bytes[]
+//        fis.close();
+
+        InputStream is = getAssets().open("8k.pcm");
+        byte[] fileBytes = new byte[is.available()];
+        is.read(fileBytes);
+        is.close();
+
+        compositeDisposable.add(ApiUtils.getIdentifyRestApi()
+                .identifyAudioFile(params, fileBytes, "audio/pcm", 16000)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<Void>() {
