@@ -7,6 +7,9 @@ package com.bovink.androidlearing.network;
 
 public class HttpUtils {
 
-    public final static String HOST = "";
+    /**
+     * 获取rest api的accesstoken
+     */
+    public final static String HOST = "https://openapi.baidu.com/";
 
 }

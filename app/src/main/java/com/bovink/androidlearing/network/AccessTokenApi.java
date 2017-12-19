@@ -3,7 +3,7 @@ package com.bovink.androidlearing.network;
 import java.util.Map;
 
 import io.reactivex.Single;
-import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 /**
@@ -13,6 +13,6 @@ import retrofit2.http.QueryMap;
 
 public interface AccessTokenApi {
 
-    @GET("homePage/getHomePage.do")
-    Single<Void> getHomePage(@QueryMap Map<String, String> options);
+    @POST("oauth/2.0/token")
+    Single<Void> getAccessToken(@QueryMap Map<String, String> options);
 }

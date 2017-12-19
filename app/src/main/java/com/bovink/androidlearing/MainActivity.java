@@ -8,6 +8,7 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
+import com.bovink.androidlearing.network.ApiUtils;
 
 import org.json.JSONObject;
 
@@ -17,10 +18,17 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_text)
     TextView textView;
+
+    private CompositeDisposable compositeDisposable;
 
     private EventManager eventManager;
 
@@ -107,7 +115,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        compositeDisposable = new CompositeDisposable();
+
         initEventManager();
+        getAccessToken();
     }
 
     @Override
@@ -160,5 +171,33 @@ public class MainActivity extends AppCompatActivity {
         cancel();
         eventManager.unregisterListener(eventListener);
         eventManager = null;
+    }
+
+    private void getAccessToken() {
+        // AccessToken
+        // 有效期12-19至1-19
+        // 24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707
+
+
+        Map<String, String> params = new HashMap<>();
+        params.put("grant_type", "client_credentials");
+        params.put("client_id", "rrfejFB86wfKqyGRITsPYXA4");
+        params.put("client_secret", "7la28gRMgv2NAybIWb9yim8ewf61DG6f");
+
+        compositeDisposable.add(ApiUtils.getAccessTokenApi()
+                .getAccessToken(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<Void>() {
+                    @Override
+                    public void onSuccess(@NonNull Void aVoid) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                }));
     }
 }
