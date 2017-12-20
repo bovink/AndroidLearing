@@ -34,6 +34,10 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
     TextView temporaryTextView;
     @BindView(R.id.tv_final)
     TextView finalTextView;
+    @BindView(R.id.tv_volume_percent)
+    TextView volumePercentTextView;
+    @BindView(R.id.tv_volume)
+    TextView volumeTextView;
 
     private EventManager eventManager;
 
@@ -86,6 +90,8 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         @Override
         public void onAsrVolume(int volumePercent, int volume) {
 
+            volumePercentTextView.setText(String.valueOf(volumePercent));
+            volumeTextView.setText(String.valueOf(volume));
         }
 
         @Override
