@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -37,8 +39,19 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_audio);
-        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.pcm";
+        ButterKnife.bind(this);
+        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/test2_8k.wav";
         compositeDisposable = new CompositeDisposable();
+    }
+
+    @OnClick(R.id.btn_analyse)
+    void startAnalyse() {
+
+        try {
+            identifyAudio();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getAccessToken() {
