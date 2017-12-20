@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bovink.androidlearing.R;
 import com.bovink.androidlearing.network.ApiUtils;
 import com.bovink.androidlearing.utils.DeviceUtils;
 
@@ -35,6 +36,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_identify_audio);
         testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/16k.pcm";
         compositeDisposable = new CompositeDisposable();
     }

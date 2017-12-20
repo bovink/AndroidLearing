@@ -11,15 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bovink.androidlearing.MainActivity">
 
-    <Button
-        android:id="@+id/btn_voice_identify"
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="识别语音" />
-
-    <Button
-        android:id="@+id/btn_audio_identify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="识别文件" />
+        android:text="voice identify"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -9,6 +9,7 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.bovink.androidlearing.IRecogListener;
+import com.bovink.androidlearing.R;
 import com.bovink.androidlearing.RecogEventAdapter;
 import com.bovink.androidlearing.RecogResult;
 
@@ -103,6 +104,7 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_identify_voice);
     }
 
 
