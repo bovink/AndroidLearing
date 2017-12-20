@@ -112,6 +112,14 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void clickStart() {
+        //        Map<String, Object> map = new HashMap<>();
+//        PidBuilder pidBuilder = new PidBuilder();
+//        map = pidBuilder.addPidInfo(map);
+//
+//        start(map);
+    }
+
     private void initEventManager() {
         eventManager = EventManagerFactory.create(this, "asr");
         eventListener = new RecogEventAdapter(iRecogListener);
