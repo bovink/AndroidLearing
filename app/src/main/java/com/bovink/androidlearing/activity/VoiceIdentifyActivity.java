@@ -3,19 +3,26 @@ package com.bovink.androidlearing.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.bovink.androidlearing.IRecogListener;
+import com.bovink.androidlearing.PidBuilder;
 import com.bovink.androidlearing.R;
 import com.bovink.androidlearing.RecogEventAdapter;
 import com.bovink.androidlearing.RecogResult;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author fox
@@ -23,6 +30,10 @@ import java.util.Map;
  */
 
 public class VoiceIdentifyActivity extends AppCompatActivity {
+    @BindView(R.id.tv_temporary)
+    TextView temporaryTextView;
+    @BindView(R.id.tv_final)
+    TextView finalTextView;
 
     private EventManager eventManager;
 
@@ -48,11 +59,13 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         @Override
         public void onAsrPartialResult(String[] results, RecogResult recogResult) {
 
+            temporaryTextView.setText(results[0]);
         }
 
         @Override
         public void onAsrFinalResult(String[] results, RecogResult recogResult) {
 
+            finalTextView.setText(results[0]);
         }
 
         @Override
@@ -105,6 +118,9 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_voice);
+        ButterKnife.bind(this);
+
+        initEventManager();
     }
 
 
@@ -114,12 +130,19 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @OnClick(R.id.btn_start)
     public void clickStart() {
-        //        Map<String, Object> map = new HashMap<>();
-//        PidBuilder pidBuilder = new PidBuilder();
-//        map = pidBuilder.addPidInfo(map);
-//
-//        start(map);
+        Map<String, Object> map = new HashMap<>();
+        map.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0);// 开启长语音
+        PidBuilder pidBuilder = new PidBuilder();
+        map = pidBuilder.addPidInfo(map);
+
+        start(map);
+    }
+
+    @OnClick(R.id.btn_cancel)
+    public void clickCancel() {
+        cancel();
     }
 
     private void initEventManager() {
