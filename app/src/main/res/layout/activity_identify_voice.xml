@@ -12,7 +12,36 @@
     tools:context="com.bovink.androidlearing.MainActivity">
 
     <TextView
+        android:id="@+id/tv_temporary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="temporary" />
+
+    <TextView
+        android:id="@+id/tv_final"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="final" />
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:text="voice identify"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start identify" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cancel identify" />
+    </LinearLayout>
 </LinearLayout>
