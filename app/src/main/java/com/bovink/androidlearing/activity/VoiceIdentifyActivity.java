@@ -3,6 +3,7 @@ package com.bovink.androidlearing.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.baidu.speech.EventListener;
@@ -30,6 +31,7 @@ import butterknife.OnClick;
  */
 
 public class VoiceIdentifyActivity extends AppCompatActivity {
+    private final String TAG = "VoiceIdentifyActivity";
     @BindView(R.id.tv_temporary)
     TextView temporaryTextView;
     @BindView(R.id.tv_final)
@@ -53,16 +55,19 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         @Override
         public void onAsrBegin() {
 
+            Log.e(TAG, "说话开始");
         }
 
         @Override
         public void onAsrEnd() {
 
+            Log.e(TAG, "说话结束");
         }
 
         @Override
         public void onAsrPartialResult(String[] results, RecogResult recogResult) {
 
+            Log.e(TAG, "持续识别中");
             temporaryTextView.setText(results[0]);
         }
 
@@ -75,16 +80,19 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         @Override
         public void onAsrFinish(RecogResult recogResult) {
 
+            Log.e(TAG, "识别结束,如果是长语音可能会继续识别");
         }
 
         @Override
         public void onAsrFinishError(int errorCode, int subErrorCode, String errorMessage, String descMessage, RecogResult recogResult) {
 
+            Log.e(TAG, "识别错误");
         }
 
         @Override
         public void onAsrLongFinish() {
 
+            Log.e(TAG, "长语音识别结束");
         }
 
         @Override
@@ -107,6 +115,7 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
         @Override
         public void onAsrOnlineNluResult(String nluResult) {
 
+            Log.e(TAG, nluResult);
         }
 
         @Override
