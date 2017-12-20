@@ -1,5 +1,7 @@
 package com.bovink.androidlearing.network;
 
+import com.bovink.androidlearing.model.RecognizeResultModel;
+
 import java.util.Map;
 
 import io.reactivex.Single;
@@ -20,7 +22,7 @@ public interface IdentifyRestApi {
     @Multipart
     @Headers("Content-Type: audio/wav;rate=8000")
     @POST("server_api")
-    Single<Void> identifyAudioFile(
+    Single<RecognizeResultModel> identifyAudioFile(
             @QueryMap Map<String, String> params,
             @Part MultipartBody.Part part
     );

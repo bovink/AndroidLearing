@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bovink.androidlearing.R;
+import com.bovink.androidlearing.model.RecognizeResultModel;
 import com.bovink.androidlearing.network.ApiUtils;
 import com.bovink.androidlearing.utils.DeviceUtils;
 
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,16 +35,21 @@ import okhttp3.RequestBody;
  */
 
 public class AudioIdentifyActivity extends AppCompatActivity {
+    @BindView(R.id.tv_result)
+    TextView resultTextView;
 
     private String testFileName;
     private CompositeDisposable compositeDisposable;
+
+    private final String fileName = "test_8k.wav";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_audio);
         ButterKnife.bind(this);
-        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/test2_8k.wav";
+
+        testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + fileName;
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -95,10 +104,17 @@ public class AudioIdentifyActivity extends AppCompatActivity {
                 .identifyAudioFile(params, part)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Void>() {
+                .subscribeWith(new DisposableSingleObserver<RecognizeResultModel>() {
                     @Override
-                    public void onSuccess(@NonNull Void aVoid) {
+                    public void onSuccess(@NonNull RecognizeResultModel model) {
 
+                        if (model.getErr_no() == 0) {
+
+                            resultTextView.setText(model.getResult().get(0));
+                        } else {
+
+                            Toast.makeText(AudioIdentifyActivity.this, model.getErr_msg(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
