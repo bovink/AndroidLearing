@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bovink.androidlearing.R;
+import com.bovink.androidlearing.model.AudioIdentifyModel;
 import com.bovink.androidlearing.model.RecognizeResultModel;
 import com.bovink.androidlearing.network.ApiUtils;
 import com.bovink.androidlearing.utils.DeviceUtils;
@@ -44,7 +45,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     private String testFileName;
     private CompositeDisposable compositeDisposable;
 
-    private final String fileName = "16k.wav";
+    private final String fileName = "test2.wav";
 
     private File audioFile;
 
@@ -131,18 +132,18 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     }
 
     private void identifyAudio2() throws IOException {
-        Map<String, String> params = new HashMap<>();
-        params.put("cuid", DeviceUtils.getIMEI(this));
-        params.put("token", "24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
+        AudioIdentifyModel model = new AudioIdentifyModel();
+        model.setCuid(DeviceUtils.getIMEI(this));
+        model.setToken("24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
+        model.setFormat("wav");
+        model.setRate(16000);
+        model.setChannel(1);
+        model.setLen(audioFile.length());
+        model.setSpeech(Base64.encodeToString(loadFile(audioFile), Base64.NO_WRAP));
 
-        params.put("format", "wav");
-        params.put("rate", String.valueOf(16000));
-        params.put("channel", "1");
-        params.put("len", String.valueOf(audioFile.length()));
-        params.put("speech", Base64.encodeToString(loadFile(audioFile), Base64.DEFAULT));
 
         compositeDisposable.add(ApiUtils.getIdentifyRestApi()
-                .identifyAudioFile(params)
+                .identifyAudioFile(model)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<RecognizeResultModel>() {

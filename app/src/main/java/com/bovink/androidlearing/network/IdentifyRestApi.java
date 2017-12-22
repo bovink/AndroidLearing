@@ -1,11 +1,13 @@
 package com.bovink.androidlearing.network;
 
+import com.bovink.androidlearing.model.AudioIdentifyModel;
 import com.bovink.androidlearing.model.RecognizeResultModel;
 
 import java.util.Map;
 
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -29,6 +31,6 @@ public interface IdentifyRestApi {
 
     @POST("server_api")
     Single<RecognizeResultModel> identifyAudioFile(
-            @QueryMap Map<String, String> params
+            @Body AudioIdentifyModel model
     );
 }
