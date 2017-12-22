@@ -45,7 +45,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     private String testFileName;
     private CompositeDisposable compositeDisposable;
 
-    private final String fileName = "test2.wav";
+    private final String fileName = "test_8k.wav";
 
     private File audioFile;
 
@@ -136,7 +136,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
         model.setCuid(DeviceUtils.getIMEI(this));
         model.setToken("24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
         model.setFormat("wav");
-        model.setRate(16000);
+        model.setRate(8000);
         model.setChannel(1);
         model.setLen(audioFile.length());
         model.setSpeech(Base64.encodeToString(loadFile(audioFile), Base64.NO_WRAP));
@@ -150,11 +150,19 @@ public class AudioIdentifyActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull RecognizeResultModel model) {
 
+                        if (model.getErr_no() == 0) {
+
+                            resultTextView.setText(model.getResult().get(0));
+                        } else {
+
+                            Toast.makeText(AudioIdentifyActivity.this, model.getErr_msg(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
 
+                        e.printStackTrace();
                     }
                 }));
     }
