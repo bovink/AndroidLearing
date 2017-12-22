@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +14,9 @@ import com.bovink.androidlearing.network.ApiUtils;
 import com.bovink.androidlearing.utils.DeviceUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +44,9 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     private String testFileName;
     private CompositeDisposable compositeDisposable;
 
-    private final String fileName = "test_8k.wav";
+    private final String fileName = "16k.wav";
+
+    private File audioFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         testFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + fileName;
+        audioFile = new File(testFileName);
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -57,7 +63,7 @@ public class AudioIdentifyActivity extends AppCompatActivity {
     void startAnalyse() {
 
         try {
-            identifyAudio();
+            identifyAudio2();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,5 +128,55 @@ public class AudioIdentifyActivity extends AppCompatActivity {
 
                     }
                 }));
+    }
+
+    private void identifyAudio2() throws IOException {
+        Map<String, String> params = new HashMap<>();
+        params.put("cuid", DeviceUtils.getIMEI(this));
+        params.put("token", "24.508115420aa19cd203cd12c3ffd6fdcb.2592000.1516242203.282335-7631707");
+
+        params.put("format", "wav");
+        params.put("rate", String.valueOf(16000));
+        params.put("channel", "1");
+        params.put("len", String.valueOf(audioFile.length()));
+        params.put("speech", Base64.encodeToString(loadFile(audioFile), Base64.DEFAULT));
+
+        compositeDisposable.add(ApiUtils.getIdentifyRestApi()
+                .identifyAudioFile(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<RecognizeResultModel>() {
+                    @Override
+                    public void onSuccess(@NonNull RecognizeResultModel model) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                }));
+    }
+
+    private static byte[] loadFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+
+        long length = file.length();
+        byte[] bytes = new byte[(int) length];
+
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numRead;
+        }
+
+        if (offset < bytes.length) {
+            is.close();
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+
+        is.close();
+        return bytes;
     }
 }

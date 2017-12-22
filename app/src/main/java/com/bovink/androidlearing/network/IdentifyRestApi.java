@@ -26,4 +26,9 @@ public interface IdentifyRestApi {
             @QueryMap Map<String, String> params,
             @Part MultipartBody.Part part
     );
+
+    @POST("server_api")
+    Single<RecognizeResultModel> identifyAudioFile(
+            @QueryMap Map<String, String> params
+    );
 }
