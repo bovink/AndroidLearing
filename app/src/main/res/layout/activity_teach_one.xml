@@ -17,14 +17,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="开始练习" />
+        android:text="习字" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="拍照" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:padding="5dp"
-        android:text="这个页面进来先播放一边gif图，然后学生点击开始练习后开始计时同时学生可以书写相同的字。"
+        android:text="这个页面进来先播放一边gif图，然后再显示习字按钮。
+学生点击习字按钮后开始计时同时学生可以书写相同的字。
+拍照按钮最开始不能按，点了习字后才能点击"
         android:textColor="@color/black"
         android:textSize="14sp" />
 
