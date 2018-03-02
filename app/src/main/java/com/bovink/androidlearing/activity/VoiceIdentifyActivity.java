@@ -11,7 +11,6 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.bovink.androidlearing.IRecogListener;
-import com.bovink.androidlearing.InFileStream;
 import com.bovink.androidlearing.PidBuilder;
 import com.bovink.androidlearing.R;
 import com.bovink.androidlearing.RecogEventAdapter;
@@ -19,7 +18,6 @@ import com.bovink.androidlearing.RecogResult;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,13 +149,13 @@ public class VoiceIdentifyActivity extends AppCompatActivity {
     public void clickStart() {
         Map<String, Object> map = new HashMap<>();
         map.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0);// 开启长语音
-        InFileStream.reset();
-        try {
-            InFileStream.setInputStream(getAssets().open("8k.wav"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        map.put(SpeechConstant.IN_FILE, "#com.bovink.androidlearing.InFileStream.create16kStream()");
+//        InFileStream.reset();
+//        try {
+//            InFileStream.setInputStream(getAssets().open("8k.wav"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        map.put(SpeechConstant.IN_FILE, "#com.bovink.androidlearing.InFileStream.create16kStream()");
         PidBuilder pidBuilder = new PidBuilder();
         map = pidBuilder.addPidInfo(map);
 
