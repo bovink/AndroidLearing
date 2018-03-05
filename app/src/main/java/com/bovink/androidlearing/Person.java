@@ -9,6 +9,7 @@ public class Person {
 
     private String name;
     private String age;
+    private boolean hasName;
 
     public Person(String name, String age) {
         this.name = name;
@@ -30,4 +31,9 @@ public class Person {
     public void setAge(String age) {
         this.age = age;
     }
+
+    public boolean isHasName() {
+        return name != null;
+    }
+
 }
