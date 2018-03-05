@@ -26,6 +26,9 @@
         <variable
             name="handler"
             type="com.bovink.androidlearing.MainActivity.EventHandler"/>
+        <variable
+            name="view"
+            type="com.bovink.androidlearing.MainActivity"/>
     </data>
 
     <LinearLayout
