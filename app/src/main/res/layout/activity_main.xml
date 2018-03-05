@@ -5,9 +5,16 @@
 
         <import type="android.view.View" />
 
+        <import type="java.util.Map" />
+
+
         <import
             alias="ColorView"
             type="com.bovink.androidlearing.View" />
+
+        <variable
+            name="map"
+            type="Map&lt;String, String&gt;" />
 
         <variable
             name="person"
@@ -37,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:gravity="center"
-            android:text="@{person.age}"
+            android:text="@{map[`ttt`]}"
             android:textColor="#000000"
             android:textSize="16sp" />
     </LinearLayout>
