@@ -23,6 +23,9 @@
         <variable
             name="colorview"
             type="ColorView" />
+        <variable
+            name="handler"
+            type="com.bovink.androidlearing.MainActivity.EventHandler"/>
     </data>
 
     <LinearLayout
@@ -37,14 +40,17 @@
             android:gravity="center"
             android:text="@{person.name}"
             android:textColor="@{colorview.color}"
+            android:background="#000000"
             android:textSize="16sp"
             android:visibility="@{person.hasName?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginTop="50dp"
+            android:onClick="@{() -> handler.changeName()}"
             android:gravity="center"
-            android:text="@{map[`ttt`]}"
+            android:text="@{person.age}"
             android:textColor="#000000"
             android:textSize="16sp" />
     </LinearLayout>
