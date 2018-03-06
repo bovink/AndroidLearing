@@ -26,7 +26,7 @@ public class ResourceConverter {
         return null;
     }
 
-    @BindingAdapter("bind:hour")
+    @BindingAdapter("hour")
     public static void setHour(CustomView view, String hour) {
 
         view.setTime(hour,
@@ -34,7 +34,7 @@ public class ResourceConverter {
                 view.getSecond());
     }
 
-    @BindingAdapter("bind:minute")
+    @BindingAdapter("minute")
     public static void setMinute(CustomView view, String minute) {
 
         view.setTime(view.getHour(),
@@ -42,7 +42,7 @@ public class ResourceConverter {
                 view.getSecond());
     }
 
-    @BindingAdapter("bind:second")
+    @BindingAdapter("second")
     public static void setSecond(CustomView view, String second) {
 
         view.setTime(view.getHour(),
@@ -50,7 +50,7 @@ public class ResourceConverter {
                 second + "b");
     }
 
-    @BindingAdapter({"bind:hour", "bind:minute"})
+    @BindingAdapter({"hour", "minute"})
     public static void loadTime(CustomView view, String hour, String minute) {
 
         view.setTime(hour + "a",
