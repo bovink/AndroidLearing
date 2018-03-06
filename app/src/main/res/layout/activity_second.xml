@@ -4,6 +4,10 @@
     <data class="SecondBind">
 
         <variable
+            name="handler"
+            type="com.bovink.androidlearing.activity.SecondActivity.EventHandler" />
+
+        <variable
             name="view"
             type="com.bovink.androidlearing.activity.SecondActivity" />
 
@@ -15,6 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -24,5 +29,12 @@
             android:background="@{viewModel.error?@string/string_red:@string/string_green}"
             android:text="second" />
 
+        <com.bovink.androidlearing.CustomView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:onClick="@{(theview) -> handler.clickCustom(theview)}"
+            android:text="hai" />
     </LinearLayout>
 </layout>
