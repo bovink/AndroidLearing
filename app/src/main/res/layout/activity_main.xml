@@ -44,6 +44,7 @@
             android:text="@{person.name}"
             android:textColor="@{colorview.color}"
             android:background="#000000"
+            android:onClick="@{()-> handler.showSecond()}"
             android:textSize="16sp"
             android:visibility="@{person.hasName?View.VISIBLE:View.GONE}" />
 
