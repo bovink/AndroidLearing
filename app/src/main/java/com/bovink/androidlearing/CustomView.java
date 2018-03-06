@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 
 public class CustomView extends AppCompatTextView {
 
-    private String time="1";
+    private String time = "00:00:00";
 
     public CustomView(Context context) {
         super(context);
@@ -31,7 +31,27 @@ public class CustomView extends AppCompatTextView {
         return time;
     }
 
+    public void setTime(String hour, String minute, String second) {
+
+        time = hour + ":" + minute + ":" + second;
+    }
+
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getHour() {
+
+        return time.substring(0, 2);
+    }
+
+    public String getMinute() {
+
+        return time.substring(3, 5);
+    }
+
+    public String getSecond() {
+
+        return time.substring(6, 8);
     }
 }

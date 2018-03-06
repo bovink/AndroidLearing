@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            app:time="@{@string/string_red}"
+            app:hour="@{@string/string_red}"
             android:onClick="@{(theview) -> handler.clickCustom(theview)}"
             android:text="hai" />
     </LinearLayout>

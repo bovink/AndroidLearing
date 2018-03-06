@@ -1,8 +1,11 @@
 package com.bovink.androidlearing.convert;
 
+import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
+import com.bovink.androidlearing.CustomView;
 
 /**
  * @author fox
@@ -22,4 +25,29 @@ public class ResourceConverter {
 
         return null;
     }
+
+    @BindingAdapter("bind:hour")
+    public static void setHour(CustomView view, String hour) {
+
+        view.setTime(hour,
+                view.getMinute(),
+                view.getSecond());
+    }
+
+    @BindingAdapter("bind:minute")
+    public static void setMinute(CustomView view, String minute) {
+
+        view.setTime(view.getHour(),
+                minute,
+                view.getSecond());
+    }
+
+    @BindingAdapter("bind:second")
+    public static void setSecond(CustomView view, String second) {
+
+        view.setTime(view.getHour(),
+                view.getMinute(),
+                second);
+    }
+
 }
