@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.bovink.androidlearing.SecondBind;
+import com.bovink.androidlearing.SecondViewModel;
+import com.bovink.androidlearing.databinding.SecondBind;
 
 
 /**
@@ -20,5 +21,6 @@ public class SecondActivity extends AppCompatActivity {
         SecondBind bind = SecondBind.inflate(getLayoutInflater());
         bind.setView(this);
         setContentView(bind.getRoot());
+        bind.setViewModel(new SecondViewModel(false));
     }
 }
