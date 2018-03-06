@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.bovink.androidlearing.CustomView;
 import com.bovink.androidlearing.SecondViewModel;
+import com.bovink.androidlearing.Time;
 import com.bovink.androidlearing.databinding.SecondBind;
 
 
@@ -26,6 +27,9 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(bind.getRoot());
         bind.setViewModel(new SecondViewModel(false));
         bind.setHandler(new EventHandler());
+
+        Time time = new Time("10", "10", "10");
+        bind.setTime(time);
     }
 
     public class EventHandler {

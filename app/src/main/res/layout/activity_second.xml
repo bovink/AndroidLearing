@@ -5,6 +5,10 @@
     <data class="SecondBind">
 
         <variable
+            name="time"
+            type="com.bovink.androidlearing.Time"/>
+
+        <variable
             name="handler"
             type="com.bovink.androidlearing.activity.SecondActivity.EventHandler" />
 
@@ -35,8 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            app:hour="@{@string/string_red}"
             android:onClick="@{(theview) -> handler.clickCustom(theview)}"
-            android:text="hai" />
+            android:text="hi"
+            app:hour="@{time.hour}"
+            app:minute="@{time.minute}"
+            app:second="@{time.second}" />
     </LinearLayout>
 </layout>

@@ -47,7 +47,15 @@ public class ResourceConverter {
 
         view.setTime(view.getHour(),
                 view.getMinute(),
-                second);
+                second + "b");
+    }
+
+    @BindingAdapter({"bind:hour", "bind:minute"})
+    public static void loadTime(CustomView view, String hour, String minute) {
+
+        view.setTime(hour + "a",
+                minute + "a",
+                view.getSecond());
     }
 
 }
