@@ -1,11 +1,14 @@
 package com.bovink.androidlearing;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 /**
  * @author fox
  * @since 2018/03/06
  */
 
-public class Time {
+public class Time extends BaseObservable {
 
     private String hour;
     private String minute;
@@ -33,11 +36,13 @@ public class Time {
         this.minute = minute;
     }
 
+    @Bindable
     public String getSecond() {
         return second;
     }
 
     public void setSecond(String second) {
         this.second = second;
+        notifyPropertyChanged(BR.second);
     }
 }

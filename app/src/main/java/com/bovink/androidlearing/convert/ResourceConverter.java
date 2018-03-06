@@ -43,19 +43,23 @@ public class ResourceConverter {
     }
 
     @BindingAdapter("second")
-    public static void setSecond(CustomView view, String second) {
+    public static void setSecond(CustomView view, String oldSecond, String newSecond) {
+        System.out.println("ResourceConverter.setSecond");
+        System.out.println("oldSecond = " + oldSecond);
+        System.out.println("newSecond = " + newSecond);
+        if (oldSecond == null) {
 
-        view.setTime(view.getHour(),
-                view.getMinute(),
-                second + "b");
-    }
+            view.setTime(view.getHour(),
+                    view.getMinute(),
+                    newSecond + "a");
+        } else {
+            if (!oldSecond.equals(newSecond)) {
 
-    @BindingAdapter({"hour", "minute"})
-    public static void loadTime(CustomView view, String hour, String minute) {
-
-        view.setTime(hour + "a",
-                minute + "a",
-                view.getSecond());
+                view.setTime(view.getHour(),
+                        view.getMinute(),
+                        newSecond + "b");
+            }
+        }
     }
 
 }
