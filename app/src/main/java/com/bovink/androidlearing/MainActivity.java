@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         MainBind binding = MainBind.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.setView(this);
-        person = new Person("jhon", "23");
+        person = new Person("jhon", "99");
         View view = new View(Color.parseColor("#66ccff"));
 
         Map<String, String> map = new HashMap<>();

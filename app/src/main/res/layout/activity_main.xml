@@ -23,12 +23,14 @@
         <variable
             name="colorview"
             type="ColorView" />
+
         <variable
             name="handler"
-            type="com.bovink.androidlearing.MainActivity.EventHandler"/>
+            type="com.bovink.androidlearing.MainActivity.EventHandler" />
+
         <variable
             name="view"
-            type="com.bovink.androidlearing.MainActivity"/>
+            type="com.bovink.androidlearing.MainActivity" />
     </data>
 
     <LinearLayout
@@ -40,11 +42,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:background="#000000"
             android:gravity="center"
+            android:onClick="@{()-> handler.showSecond()}"
             android:text="@{person.name}"
             android:textColor="@{colorview.color}"
-            android:background="#000000"
-            android:onClick="@{()-> handler.showSecond()}"
             android:textSize="16sp"
             android:visibility="@{person.hasName?View.VISIBLE:View.GONE}" />
 
@@ -52,9 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="50dp"
-            android:onClick="@{() -> handler.changeName()}"
             android:gravity="center"
-            android:text="@{person.age}"
+            android:onClick="@{() -> handler.changeName()}"
+            android:text="@{person.age,default=测试数据}"
             android:textColor="#000000"
             android:textSize="16sp" />
     </LinearLayout>
