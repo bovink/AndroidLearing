@@ -19,6 +19,7 @@ import com.bovink.androidlearing.databinding.SecondBind;
 
 public class SecondActivity extends AppCompatActivity {
     Time time;
+    EventHandler handler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,9 +28,17 @@ public class SecondActivity extends AppCompatActivity {
         bind.setView(this);
         setContentView(bind.getRoot());
         bind.setViewModel(new SecondViewModel(false));
-        bind.setHandler(new EventHandler());
+        handler = new EventHandler();
+        bind.setHandler(handler);
 
         time = new Time("10", "10", "10");
+        time.field.set(new CustomView.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged() {
+
+                handler.changeTime();
+            }
+        });
         bind.setTime(time);
     }
 
@@ -57,12 +66,11 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         public void setTime() {
-            System.out.println("EventHandler.setTime");
             time.field.set(new CustomView.OnTimeChangedListener() {
                 @Override
                 public void onTimeChanged() {
 
-                    System.out.println("newListener.changeTime");
+                    System.out.println("EventHandler.changeTimeNew");
                 }
             });
         }
