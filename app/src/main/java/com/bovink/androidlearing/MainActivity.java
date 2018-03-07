@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         MainBind binding = MainBind.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.setView(this);
-        person = new Person("jhon", "99");
+        person = new Person("jhon", "99", 1, 2);
         View view = new View(Color.parseColor("#66ccff"));
 
         Map<String, String> map = new HashMap<>();
@@ -46,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
         public void changeName() {
 
-            Toast.makeText(MainActivity.this, "aaa", Toast.LENGTH_SHORT).show();
-            person.setName(null);
-            person.setAge("9999");
+            Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
+//            person.setName(null);
+//            person.setAge("9999");
+            person.setNumber1(person.getNumber1() + 1);
+            person.setNumber2(person.getNumber2() + 1);
         }
 
         public void showSecond() {

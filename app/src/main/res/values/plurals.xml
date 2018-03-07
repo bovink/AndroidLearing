@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="tutorials">
+        <item quantity="one">%1$d tutorial, %2$d test</item>
+        <item quantity="other">%1$d aa, %2$d bb</item>
+    </plurals>
+</resources>

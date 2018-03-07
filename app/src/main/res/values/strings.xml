@@ -2,4 +2,5 @@
     <string name="app_name">AndroidLearing</string>
     <string name="string_red">198</string>
     <string name="string_green">199</string>
+    <string name="nameFormat">my name is %1$s, and today is %2$s</string>
 </resources>
