@@ -5,12 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author fox
  * @since 2018/03/06
  */
 
 public class CustomView extends AppCompatTextView {
+
+    private List<OnTimeChangedListener> listeners = new ArrayList<>();
 
     private String time = "00:00:00";
 
@@ -34,6 +39,9 @@ public class CustomView extends AppCompatTextView {
     public void setTime(String hour, String minute, String second) {
 
         time = hour + ":" + minute + ":" + second;
+        for (OnTimeChangedListener listener : listeners) {
+            listener.onTimeChanged();
+        }
     }
 
     public void setTime(String time) {
@@ -53,5 +61,20 @@ public class CustomView extends AppCompatTextView {
     public String getSecond() {
 
         return time.substring(6, 8);
+    }
+
+    public void addOnTimeChangedListener(OnTimeChangedListener listener) {
+
+        listeners.add(listener);
+    }
+
+    public void removeOnTimeChangedListener(OnTimeChangedListener listener) {
+
+        listeners.remove(listener);
+    }
+
+    public interface OnTimeChangedListener {
+
+        void onTimeChanged();
     }
 }

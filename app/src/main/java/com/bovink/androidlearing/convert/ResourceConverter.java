@@ -44,9 +44,6 @@ public class ResourceConverter {
 
     @BindingAdapter("second")
     public static void setSecond(CustomView view, String oldSecond, String newSecond) {
-        System.out.println("ResourceConverter.setSecond");
-        System.out.println("oldSecond = " + oldSecond);
-        System.out.println("newSecond = " + newSecond);
         if (oldSecond == null) {
 
             view.setTime(view.getHour(),
@@ -59,6 +56,20 @@ public class ResourceConverter {
                         view.getMinute(),
                         newSecond + "b");
             }
+        }
+    }
+
+    @BindingAdapter("onTimeChanged")
+    public static void setOnTimeChangedListener(CustomView view, CustomView.OnTimeChangedListener oldValue, CustomView.OnTimeChangedListener newValue) {
+        System.out.println("ResourceConverter.setOnTimeChangedListener");
+
+        if (oldValue != null) {
+
+            view.removeOnTimeChangedListener(oldValue);
+        }
+        if (newValue != null) {
+
+            view.addOnTimeChangedListener(newValue);
         }
     }
 

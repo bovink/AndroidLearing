@@ -2,6 +2,7 @@ package com.bovink.androidlearing;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableField;
 
 /**
  * @author fox
@@ -9,6 +10,8 @@ import android.databinding.Bindable;
  */
 
 public class Time extends BaseObservable {
+    public final ObservableField<CustomView.OnTimeChangedListener> field =
+            new ObservableField<>();
 
     private String hour;
     private String minute;

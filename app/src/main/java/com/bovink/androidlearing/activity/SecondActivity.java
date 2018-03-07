@@ -40,11 +40,31 @@ public class SecondActivity extends AppCompatActivity {
             time.setSecond("10");
         }
 
+        public void setHournew() {
+
+            time.setSecond("11");
+        }
+
         public void clickCustom(View view) {
 
             CustomView customView = (CustomView) view;
 
             Toast.makeText(SecondActivity.this, customView.getTime(), Toast.LENGTH_SHORT).show();
+        }
+
+        public void changeTime() {
+            System.out.println("EventHandler.changeTime");
+        }
+
+        public void setTime() {
+            System.out.println("EventHandler.setTime");
+            time.field.set(new CustomView.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged() {
+
+                    System.out.println("newListener.changeTime");
+                }
+            });
         }
     }
 }

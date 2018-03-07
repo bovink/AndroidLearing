@@ -40,10 +40,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            app:onTimeChanged="@{() -> handler.changeTime()}"
             android:onClick="@{(theview) -> handler.clickCustom(theview)}"
             android:text="hi"
             app:hour="@{time.hour}"
             app:minute="@{time.minute}"
             app:second="@{time.second}" />
+
+        <Button
+            android:text="change one"
+            android:onClick="@{() -> handler.setTime()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="change two"
+            android:onClick="@{() -> handler.setHournew()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>
