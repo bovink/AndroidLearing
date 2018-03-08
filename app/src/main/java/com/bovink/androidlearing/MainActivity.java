@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.bovink.androidlearing.activity.RecyclerActivity;
 import com.bovink.androidlearing.activity.SecondActivity;
 import com.bovink.androidlearing.databinding.MainBind;
 
@@ -55,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
         public void showSecond() {
             Intent intent = new Intent(mContext, SecondActivity.class);
+            startActivity(intent);
+        }
+
+        public void showRecycler() {
+            Intent intent = new Intent(mContext, RecyclerActivity.class);
             startActivity(intent);
         }
     }
