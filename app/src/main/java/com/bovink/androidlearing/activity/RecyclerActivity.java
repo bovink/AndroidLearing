@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class RecyclerActivity extends AppCompatActivity {
         studentList.add(new Student("lilei", "12"));
         studentList.add(new Student("shilu", "14"));
         studentList.add(new Student("ddws", "15"));
+        bind.rvStu.setLayoutManager(new LinearLayoutManager(mContext));
         bind.rvStu.setAdapter(new StuAdapter());
 
     }
