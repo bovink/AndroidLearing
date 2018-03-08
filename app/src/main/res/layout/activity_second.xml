@@ -6,7 +6,7 @@
 
         <variable
             name="time"
-            type="com.bovink.androidlearing.Time"/>
+            type="com.bovink.androidlearing.Time" />
 
         <variable
             name="handler"
@@ -31,8 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="@{() -> handler.setHour()}"
             android:background="@{viewModel.error?@string/string_red:@string/string_green}"
+            android:onClick="@{() -> handler.setHour()}"
             android:text="second" />
 
         <com.bovink.androidlearing.CustomView
@@ -40,23 +40,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            app:onTimeChanged="@{time.field}"
             android:onClick="@{(theview) -> handler.clickCustom(theview)}"
             android:text="hi"
             app:hour="@{time.hour}"
             app:minute="@{time.minute}"
+            app:onTimeChanged="@{time.field}"
             app:second="@{time.second}" />
 
         <Button
-            android:text="change one"
-            android:onClick="@{() -> handler.setTime()}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> handler.setTime()}"
+            android:text="change one" />
 
         <Button
-            android:text="change two"
-            android:onClick="@{() -> handler.setHournew()}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> handler.setHournew()}"
+            android:text="change two" />
     </LinearLayout>
 </layout>
