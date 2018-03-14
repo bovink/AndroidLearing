@@ -1,64 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data class="MainBind">
+    <data class="MainActBinding">
 
-        <import type="android.view.View" />
-
-        <import type="java.util.Map" />
-
-
-        <import
-            alias="ColorView"
-            type="com.bovink.androidlearing.View" />
-
-        <variable
-            name="map"
-            type="Map&lt;String, String&gt;" />
-
-        <variable
-            name="person"
-            type="com.bovink.androidlearing.Person" />
-
-        <variable
-            name="colorview"
-            type="ColorView" />
-
-        <variable
-            name="handler"
-            type="com.bovink.androidlearing.MainActivity.EventHandler" />
-
-        <variable
-            name="view"
-            type="com.bovink.androidlearing.MainActivity" />
     </data>
 
     <LinearLayout
-        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#000000"
-            android:gravity="center"
-            android:onClick="@{()-> handler.showSecond()}"
-            android:text="@{person.name}"
-            android:textColor="@{colorview.color}"
-            android:textSize="16sp"
-            android:visibility="@{person.hasName?View.VISIBLE:View.GONE}" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="50dp"
-            android:gravity="center"
-            android:onClick="@{() -> handler.changeName()}"
-            android:text="@{@string/nameFormat(person.number1,person.number2),default=测试数据}"
-            android:textColor="#000000"
-            android:textSize="16sp" />
     </LinearLayout>
 </layout>
 
