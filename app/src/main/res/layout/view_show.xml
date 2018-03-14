@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data class="MainActBinding">
+    <data class="ViewStubBinding">
 
         <variable
-            name="handler"
-            type="com.bovink.androidlearing.MainActivity.EventHandler" />
+            name="person"
+            type="com.bovink.androidlearing.Person" />
     </data>
 
     <LinearLayout
@@ -14,17 +14,14 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ViewStub
-            android:id="@+id/viewStub"
-            android:layout="@layout/view_show"
-            android:layout_width="360dp"
-            android:layout_height="360dp" />
-
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> handler.showView()}"
-            android:text="inflate" />
+            android:text="@{person.name}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{person.age}" />
     </LinearLayout>
 </layout>
-
